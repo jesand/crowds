@@ -19,6 +19,7 @@ import (
 	"encoding/xml"
 	"errors"
 	"fmt"
+	amtgen "github.com/jesand/crowds/amt/gen/mechanicalturk.amazonaws.com/AWSMechanicalTurk/2014-08-15/AWSMechanicalTurkRequester.xsd_go"
 	"io"
 	"net/http"
 	"reflect"
@@ -26,8 +27,57 @@ import (
 	"time"
 )
 
-// AmtClient is an initialized structure for interacting with AMT.
-type AmtClient struct {
+// AmtClient is an interface for interacting with AMT.
+type AmtClient interface {
+	ApproveAssignment(assignmentId, requesterFeedback string) (amtgen.TxsdApproveAssignmentResponse, error)
+	ApproveRejectedAssignment(assignmentId, requesterFeedback string) (amtgen.TxsdApproveRejectedAssignmentResponse, error)
+	AssignQualification(qualificationTypeId, workerId string, integerValue int, sendNotification bool) (amtgen.TxsdAssignQualificationResponse, error)
+	BlockWorker(workerId, reason string) (amtgen.TxsdBlockWorkerResponse, error)
+	ChangeHITTypeOfHIT(hitId, hitTypeId string) (amtgen.TxsdChangeHITTypeOfHITResponse, error)
+	CreateHIT(title, description, question string, hitLayoutId string, hitLayoutParameters map[string]string, reward float32, assignmentDurationInSeconds, lifetimeInSeconds, maxAssignments, autoApprovalDelayInSeconds int, keywords []string, qualificationRequirements []*amtgen.TQualificationRequirement, assignmentReviewPolicy, hitReviewPolicy *amtgen.TReviewPolicy, requesterAnnotation, uniqueRequestToken string) (amtgen.TxsdCreateHITResponse, error)
+	CreateHITFromHITTypeId(hitTypeId, question string, hitLayoutId string, hitLayoutParameters map[string]string, lifetimeInSeconds, maxAssignments int, assignmentReviewPolicy, hitReviewPolicy *amtgen.TReviewPolicy, requesterAnnotation, uniqueRequestToken string) (amtgen.TxsdCreateHITResponse, error)
+	CreateHITFromArgs(args amtgen.TCreateHITRequest) (amtgen.TxsdCreateHITResponse, error)
+	CreateQualificationType(name, description string, keywords []string, retryDelayInSeconds int, qualificationTypeStatus, test, answerKey string, testDurationInSeconds int, autoGranted bool, autoGrantedValue int) (amtgen.TxsdCreateQualificationTypeResponse, error)
+	DisableHIT(hitId string) (amtgen.TxsdDisableHITResponse, error)
+	DisposeHIT(hitId string) (amtgen.TxsdDisposeHITResponse, error)
+	DisposeQualificationType(qualificationTypeId string) (amtgen.TxsdDisposeQualificationTypeResponse, error)
+	ExtendHIT(hitId string, maxAssignmentsIncrement, expirationIncrementInSeconds int, uniqueRequestToken string) (amtgen.TxsdExtendHITResponse, error)
+	ForceExpireHIT(hitId string) (amtgen.TxsdForceExpireHITResponse, error)
+	GetAccountBalance() (amtgen.TxsdGetAccountBalanceResponse, error)
+	GetAssignment(assignmentId string) (amtgen.TxsdGetAssignmentResponse, error)
+	GetAssignmentsForHIT(hitId string, assignmentStatuses []string, sortProperty string, sortAscending bool, pageSize, pageNumber int) (amtgen.TxsdGetAssignmentsForHITResponse, error)
+	GetBlockedWorkers(pageSize, pageNumber int) (amtgen.TxsdGetBlockedWorkersResponse, error)
+	GetBonusPayments(hitId, assignmentId string, pageSize, pageNumber int) (amtgen.TxsdGetBonusPaymentsResponse, error)
+	GetFileUploadURL(assignmentId, questionIdentifier string) (amtgen.TxsdGetFileUploadURLResponse, error)
+	GetHIT(hitId string) (amtgen.TxsdGetHITResponse, error)
+	GetHITsForQualificationType(qualificationTypeId string, pageSize, pageNumber int) (amtgen.TxsdGetHITsForQualificationTypeResponse, error)
+	GetQualificationsForQualificationType(qualificationTypeId string, isGranted bool, pageSize, pageNumber int) (amtgen.TxsdGetQualificationsForQualificationTypeResponse, error)
+	GetQualificationRequests(qualificationTypeId, sortProperty string, sortAscending bool, pageSize, pageNumber int) (amtgen.TxsdGetQualificationRequestsResponse, error)
+	GetQualificationScore(qualificationTypeId, subjectId string) (amtgen.TxsdGetQualificationScoreResponse, error)
+	GetQualificationType(qualificationTypeId string) (amtgen.TxsdGetQualificationTypeResponse, error)
+	GetRequesterStatistic(statistic, timePeriod string, count int) (amtgen.TxsdGetRequesterStatisticResponse, error)
+	GetRequesterWorkerStatistic(statistic, workerId, timePeriod string, count int) (amtgen.TxsdGetRequesterWorkerStatisticResponse, error)
+	GetReviewableHITs(hitTypeId, status, sortProperty string, sortAscending bool, pageSize, pageNumber int) (amtgen.TxsdGetReviewableHITsResponse, error)
+	GetReviewResultsForHIT(hitId string, policyLevels []string, retrieveActions, retrieveResults bool, pageSize, pageNumber int) (amtgen.TxsdGetReviewResultsForHITResponse, error)
+	GrantBonus(workerId, assignmentId string, bonusAmount float32, reason, uniqueRequestToken string) (amtgen.TxsdGrantBonusResponse, error)
+	GrantQualification(qualificationRequestId string, integerValue int) (amtgen.TxsdGrantQualificationResponse, error)
+	NotifyWorkers(subject, messageText string, workerIds []string) (amtgen.TxsdNotifyWorkersResponse, error)
+	RegisterHITType(title, description string, reward float32, assignmentDurationInSeconds, autoApprovalDelayInSeconds int, keywords []string, qualificationRequirements []*amtgen.TQualificationRequirement) (amtgen.TxsdRegisterHITTypeResponse, error)
+	RejectAssignment(assignmentId, requesterFeedback string) (amtgen.TxsdRejectAssignmentResponse, error)
+	RejectQualificationRequest(qualificationRequestId, reason string) (amtgen.TxsdRejectQualificationRequestResponse, error)
+	RevokeQualification(subjectId, qualificationTypeId, reason string) (amtgen.TxsdRevokeQualificationResponse, error)
+	SearchHITs(sortProperty string, sortAscending bool, pageSize, pageNumber int) (amtgen.TxsdSearchHITsResponse, error)
+	SearchQualificationTypes(query, sortProperty string, sortAscending bool, pageSize, pageNumber int, mustBeRequestable, mustBeOwnedByCaller bool) (amtgen.TxsdSearchQualificationTypesResponse, error)
+	SendTestEventNotification(notification *amtgen.TNotificationSpecification, testEventType string) (amtgen.TxsdSendTestEventNotificationResponse, error)
+	SetHITAsReviewing(hitID string, revert bool) (amtgen.TxsdSetHITAsReviewingResponse, error)
+	SetHITTypeNotification(hitTypeID string, notification *amtgen.TNotificationSpecification, active bool) (amtgen.TxsdSetHITTypeNotificationResponse, error)
+	UnblockWorker(workerId, reason string) (amtgen.TxsdUnblockWorkerResponse, error)
+	UpdateQualificationScore(qualificationTypeId, subjectId string, integerValue int) (amtgen.TxsdUpdateQualificationScoreResponse, error)
+	UpdateQualificationType(qualificationTypeId string, retryDelayInSeconds int, qualificationTypeStatus, description, test, answerKey string, testDurationInSeconds int, autoGranted bool, autoGrantedValue int) (amtgen.TxsdUpdateQualificationTypeResponse, error)
+}
+
+// amtClient implements AmtClient
+type amtClient struct {
 
 	// The access key for your AMT account
 	AWSAccessKeyId string
@@ -40,12 +90,12 @@ type AmtClient struct {
 }
 
 // Initialize a new client for AMT.
-func NewClient(accessKeyId, secretKey string, sandbox bool) *AmtClient {
+func NewClient(accessKeyId, secretKey string, sandbox bool) AmtClient {
 	urlRoot := URL_PROD
 	if sandbox {
 		urlRoot = URL_SANDBOX
 	}
-	return &AmtClient{
+	return &amtClient{
 		AWSAccessKeyId: accessKeyId,
 		SecretKey:      secretKey,
 		UrlRoot:        urlRoot,
@@ -72,7 +122,7 @@ func FormatTime(t time.Time) string {
 }
 
 // Sets default fields and cryptographically signs the request.
-func (client AmtClient) signRequest(operation string, request interface{}) (amtRequest, error) {
+func (client amtClient) signRequest(operation string, request interface{}) (amtRequest, error) {
 	t := reflect.TypeOf(request)
 	if t.Kind() != reflect.Ptr || t.Elem().Kind() != reflect.Struct {
 		return amtRequest{}, errors.New("signRequest() requires a struct ptr as its second arg")
@@ -92,7 +142,7 @@ func (client AmtClient) signRequest(operation string, request interface{}) (amtR
 	return req, nil
 }
 
-func (client AmtClient) signatureFor(service, operation, timestamp string) string {
+func (client amtClient) signatureFor(service, operation, timestamp string) string {
 	mac := hmac.New(sha1.New, []byte(client.SecretKey))
 	io.WriteString(mac, service)
 	io.WriteString(mac, operation)
@@ -200,7 +250,7 @@ func packField(n string, v reflect.Value, justIndexed bool) map[string]string {
 }
 
 // Send a request and decode the response into the given struct.
-func (client AmtClient) sendRequest(request amtRequest, response interface{}) error {
+func (client amtClient) sendRequest(request amtRequest, response interface{}) error {
 	req, err := http.NewRequest("GET", client.UrlRoot, nil)
 	if err != nil {
 		return err

@@ -9,7 +9,7 @@ import (
 )
 
 // ApproveAssignment approves the results of a completed assignment.
-func (client AmtClient) ApproveAssignment(assignmentId,
+func (client amtClient) ApproveAssignment(assignmentId,
 	requesterFeedback string) (amtgen.TxsdApproveAssignmentResponse, error) {
 
 	// Prepare the request
@@ -32,7 +32,7 @@ func (client AmtClient) ApproveAssignment(assignmentId,
 
 // ApproveRejectedAssignment approves an assignment that was previously
 // rejected.
-func (client AmtClient) ApproveRejectedAssignment(assignmentId,
+func (client amtClient) ApproveRejectedAssignment(assignmentId,
 	requesterFeedback string) (amtgen.TxsdApproveRejectedAssignmentResponse, error) {
 
 	// Prepare the request
@@ -54,7 +54,7 @@ func (client AmtClient) ApproveRejectedAssignment(assignmentId,
 }
 
 // AssignQualification gives a Worker a Qualification.
-func (client AmtClient) AssignQualification(qualificationTypeId,
+func (client amtClient) AssignQualification(qualificationTypeId,
 	workerId string, integerValue int, sendNotification bool) (
 	amtgen.TxsdAssignQualificationResponse, error) {
 
@@ -79,7 +79,7 @@ func (client AmtClient) AssignQualification(qualificationTypeId,
 }
 
 // BlockWorker allows you to prevent a Worker from working on your HITs.
-func (client AmtClient) BlockWorker(workerId, reason string) (
+func (client amtClient) BlockWorker(workerId, reason string) (
 	amtgen.TxsdBlockWorkerResponse, error) {
 
 	// Prepare the request
@@ -101,7 +101,7 @@ func (client AmtClient) BlockWorker(workerId, reason string) (
 }
 
 // ChangeHITTypeOfHIT allows you to change the HITType properties of a HIT.
-func (client AmtClient) ChangeHITTypeOfHIT(hitId, hitTypeId string) (
+func (client amtClient) ChangeHITTypeOfHIT(hitId, hitTypeId string) (
 	amtgen.TxsdChangeHITTypeOfHITResponse, error) {
 
 	// Prepare the request
@@ -123,7 +123,7 @@ func (client AmtClient) ChangeHITTypeOfHIT(hitId, hitTypeId string) (
 }
 
 // CreateHIT creates a new Human Intelligence Task (HIT) without a HITTypeId.
-func (client AmtClient) CreateHIT(title, description, question string,
+func (client amtClient) CreateHIT(title, description, question string,
 	hitLayoutId string, hitLayoutParameters map[string]string,
 	reward float32, assignmentDurationInSeconds,
 	lifetimeInSeconds, maxAssignments, autoApprovalDelayInSeconds int,
@@ -171,7 +171,7 @@ func (client AmtClient) CreateHIT(title, description, question string,
 
 // CreateHITFromHITTypeId creates a new Human Intelligence Task (HIT) from a
 // HITTypeId.
-func (client AmtClient) CreateHITFromHITTypeId(hitTypeId, question string,
+func (client amtClient) CreateHITFromHITTypeId(hitTypeId, question string,
 	hitLayoutId string, hitLayoutParameters map[string]string,
 	lifetimeInSeconds, maxAssignments int,
 	assignmentReviewPolicy, hitReviewPolicy *amtgen.TReviewPolicy,
@@ -208,7 +208,7 @@ func (client AmtClient) CreateHITFromHITTypeId(hitTypeId, question string,
 
 // CreateHITFromArgs creates a new Human Intelligence Task (HIT) from the given
 // argument values.
-func (client AmtClient) CreateHITFromArgs(args amtgen.TCreateHITRequest) (
+func (client amtClient) CreateHITFromArgs(args amtgen.TCreateHITRequest) (
 	amtgen.TxsdCreateHITResponse, error) {
 
 	// Prepare the request
@@ -227,7 +227,7 @@ func (client AmtClient) CreateHITFromArgs(args amtgen.TCreateHITRequest) (
 }
 
 // CreateQualificationType creates a new Qualification type.
-func (client AmtClient) CreateQualificationType(name, description string,
+func (client amtClient) CreateQualificationType(name, description string,
 	keywords []string, retryDelayInSeconds int,
 	qualificationTypeStatus, test, answerKey string,
 	testDurationInSeconds int, autoGranted bool,
@@ -261,7 +261,7 @@ func (client AmtClient) CreateQualificationType(name, description string,
 }
 
 // DisableHIT removes a HIT from the Amazon Mechanical Turk marketplace.
-func (client AmtClient) DisableHIT(hitId string) (
+func (client amtClient) DisableHIT(hitId string) (
 	amtgen.TxsdDisableHITResponse, error) {
 
 	// Prepare the request
@@ -282,7 +282,7 @@ func (client AmtClient) DisableHIT(hitId string) (
 }
 
 // DisposeHIT disposes of a HIT that is no longer needed.
-func (client AmtClient) DisposeHIT(hitId string) (
+func (client amtClient) DisposeHIT(hitId string) (
 	amtgen.TxsdDisposeHITResponse, error) {
 
 	// Prepare the request
@@ -303,7 +303,7 @@ func (client AmtClient) DisposeHIT(hitId string) (
 }
 
 // DisposeQualificationType disposes of a HIT that is no longer needed.
-func (client AmtClient) DisposeQualificationType(qualificationTypeId string) (
+func (client amtClient) DisposeQualificationType(qualificationTypeId string) (
 	amtgen.TxsdDisposeQualificationTypeResponse, error) {
 
 	// Prepare the request
@@ -325,7 +325,7 @@ func (client AmtClient) DisposeQualificationType(qualificationTypeId string) (
 
 // ExtendHIT increases the maximum number of assignments, or extends the
 // expiration date, of an existing HIT.
-func (client AmtClient) ExtendHIT(hitId string,
+func (client amtClient) ExtendHIT(hitId string,
 	maxAssignmentsIncrement, expirationIncrementInSeconds int,
 	uniqueRequestToken string) (
 	amtgen.TxsdExtendHITResponse, error) {
@@ -352,7 +352,7 @@ func (client AmtClient) ExtendHIT(hitId string,
 
 // ForceExpireHIT causes a HIT to expire immediately, as if the
 // LifetimeInSeconds parameter of the HIT had elapsed.
-func (client AmtClient) ForceExpireHIT(hitId string) (
+func (client amtClient) ForceExpireHIT(hitId string) (
 	amtgen.TxsdForceExpireHITResponse, error) {
 
 	// Prepare the request
@@ -374,7 +374,7 @@ func (client AmtClient) ForceExpireHIT(hitId string) (
 
 // GetAccountBalance causes a HIT to expire immediately, as if the
 // LifetimeInSeconds parameter of the HIT had elapsed.
-func (client AmtClient) GetAccountBalance() (
+func (client amtClient) GetAccountBalance() (
 	amtgen.TxsdGetAccountBalanceResponse, error) {
 
 	// Prepare the request
@@ -395,7 +395,7 @@ func (client AmtClient) GetAccountBalance() (
 
 // GetAssignment retrieves an assignment with an AssignmentStatus value of
 // Submitted, Approved, or Rejected.
-func (client AmtClient) GetAssignment(assignmentId string) (
+func (client amtClient) GetAssignment(assignmentId string) (
 	amtgen.TxsdGetAssignmentResponse, error) {
 
 	// Prepare the request
@@ -416,7 +416,7 @@ func (client AmtClient) GetAssignment(assignmentId string) (
 }
 
 // GetAssignmentsForHIT retrieves completed assignments for a HIT.
-func (client AmtClient) GetAssignmentsForHIT(hitId string,
+func (client amtClient) GetAssignmentsForHIT(hitId string,
 	assignmentStatuses []string, sortProperty string, sortAscending bool,
 	pageSize, pageNumber int) (
 	amtgen.TxsdGetAssignmentsForHITResponse, error) {
@@ -452,7 +452,7 @@ func (client AmtClient) GetAssignmentsForHIT(hitId string,
 
 // GetBlockedWorkers retrieves a list of Workers who are blocked from working
 // on your HITs.
-func (client AmtClient) GetBlockedWorkers(pageSize, pageNumber int) (
+func (client amtClient) GetBlockedWorkers(pageSize, pageNumber int) (
 	amtgen.TxsdGetBlockedWorkersResponse, error) {
 
 	// Prepare the request
@@ -475,7 +475,7 @@ func (client AmtClient) GetBlockedWorkers(pageSize, pageNumber int) (
 
 // GetBonusPayments retrieves the amounts of bonuses you have paid to Workers
 // for a given HIT or assignment.
-func (client AmtClient) GetBonusPayments(hitId, assignmentId string,
+func (client amtClient) GetBonusPayments(hitId, assignmentId string,
 	pageSize, pageNumber int) (
 	amtgen.TxsdGetBonusPaymentsResponse, error) {
 
@@ -500,7 +500,7 @@ func (client AmtClient) GetBonusPayments(hitId, assignmentId string,
 }
 
 // GetFileUploadURL generates and returns a temporary URL.
-func (client AmtClient) GetFileUploadURL(assignmentId,
+func (client amtClient) GetFileUploadURL(assignmentId,
 	questionIdentifier string) (
 	amtgen.TxsdGetFileUploadURLResponse, error) {
 
@@ -523,7 +523,7 @@ func (client AmtClient) GetFileUploadURL(assignmentId,
 }
 
 // GetHIT retrieves the details of the specified HIT.
-func (client AmtClient) GetHIT(hitId string) (
+func (client amtClient) GetHIT(hitId string) (
 	amtgen.TxsdGetHITResponse, error) {
 
 	// Prepare the request
@@ -545,7 +545,7 @@ func (client AmtClient) GetHIT(hitId string) (
 
 // GetHITsForQualificationType returns the HITs that use the given Qualification
 // type for a Qualification requirement.
-func (client AmtClient) GetHITsForQualificationType(qualificationTypeId string,
+func (client amtClient) GetHITsForQualificationType(qualificationTypeId string,
 	pageSize, pageNumber int) (
 	amtgen.TxsdGetHITsForQualificationTypeResponse, error) {
 
@@ -570,7 +570,7 @@ func (client AmtClient) GetHITsForQualificationType(qualificationTypeId string,
 
 // GetQualificationsForQualificationType returns all of the Qualifications
 // granted to Workers for a given Qualification type.
-func (client AmtClient) GetQualificationsForQualificationType(
+func (client amtClient) GetQualificationsForQualificationType(
 	qualificationTypeId string, isGranted bool,
 	pageSize, pageNumber int) (
 	amtgen.TxsdGetQualificationsForQualificationTypeResponse, error) {
@@ -601,7 +601,7 @@ func (client AmtClient) GetQualificationsForQualificationType(
 
 // GetQualificationRequests returns all of the Qualifications
 // granted to Workers for a given Qualification type.
-func (client AmtClient) GetQualificationRequests(
+func (client amtClient) GetQualificationRequests(
 	qualificationTypeId, sortProperty string, sortAscending bool,
 	pageSize, pageNumber int) (
 	amtgen.TxsdGetQualificationRequestsResponse, error) {
@@ -634,7 +634,7 @@ func (client AmtClient) GetQualificationRequests(
 
 // GetQualificationScore returns the value of a Worker's Qualification for a
 // given Qualification type.
-func (client AmtClient) GetQualificationScore(
+func (client amtClient) GetQualificationScore(
 	qualificationTypeId, subjectId string) (
 	amtgen.TxsdGetQualificationScoreResponse, error) {
 
@@ -658,7 +658,7 @@ func (client AmtClient) GetQualificationScore(
 
 // GetQualificationType retrieves information about a Qualification type using
 // its ID.
-func (client AmtClient) GetQualificationType(qualificationTypeId string) (
+func (client amtClient) GetQualificationType(qualificationTypeId string) (
 	amtgen.TxsdGetQualificationTypeResponse, error) {
 
 	// Prepare the request
@@ -680,7 +680,7 @@ func (client AmtClient) GetQualificationType(qualificationTypeId string) (
 
 // GetRequesterStatistic retrieves statistics about you (the Requester calling
 // the operation).
-func (client AmtClient) GetRequesterStatistic(statistic, timePeriod string,
+func (client amtClient) GetRequesterStatistic(statistic, timePeriod string,
 	count int) (amtgen.TxsdGetRequesterStatisticResponse, error) {
 
 	// Prepare the request
@@ -704,7 +704,7 @@ func (client AmtClient) GetRequesterStatistic(statistic, timePeriod string,
 
 // GetRequesterWorkerStatistic retrieves statistics about a specific Worker who
 // has completed Human Intelligence Tasks (HITs) for you.
-func (client AmtClient) GetRequesterWorkerStatistic(statistic, workerId,
+func (client amtClient) GetRequesterWorkerStatistic(statistic, workerId,
 	timePeriod string, count int) (amtgen.TxsdGetRequesterWorkerStatisticResponse, error) {
 
 	// Prepare the request
@@ -729,7 +729,7 @@ func (client AmtClient) GetRequesterWorkerStatistic(statistic, workerId,
 
 // GetReviewableHITs retrieves the HITs with Status equal to Reviewable or
 // Status equal to Reviewing that belong to the Requester calling the operation.
-func (client AmtClient) GetReviewableHITs(hitTypeId, status,
+func (client amtClient) GetReviewableHITs(hitTypeId, status,
 	sortProperty string, sortAscending bool,
 	pageSize, pageNumber int) (amtgen.TxsdGetReviewableHITsResponse, error) {
 
@@ -761,7 +761,7 @@ func (client AmtClient) GetReviewableHITs(hitTypeId, status,
 
 // GetReviewResultsForHIT retrieves the computed results and the actions taken
 // in the course of executing your Review Policies during a CreateHIT operation.
-func (client AmtClient) GetReviewResultsForHIT(hitId string,
+func (client amtClient) GetReviewResultsForHIT(hitId string,
 	policyLevels []string,
 	retrieveActions, retrieveResults bool,
 	pageSize, pageNumber int) (amtgen.TxsdGetReviewResultsForHITResponse, error) {
@@ -792,7 +792,7 @@ func (client AmtClient) GetReviewResultsForHIT(hitId string,
 }
 
 // GrantBonus issues a payment of money from your account to a Worker.
-func (client AmtClient) GrantBonus(workerId, assignmentId string,
+func (client amtClient) GrantBonus(workerId, assignmentId string,
 	bonusAmount float32, reason, uniqueRequestToken string) (
 	amtgen.TxsdGrantBonusResponse, error) {
 
@@ -820,7 +820,7 @@ func (client AmtClient) GrantBonus(workerId, assignmentId string,
 }
 
 // GrantQualification issues a payment of money from your account to a Worker.
-func (client AmtClient) GrantQualification(qualificationRequestId string,
+func (client amtClient) GrantQualification(qualificationRequestId string,
 	integerValue int) (
 	amtgen.TxsdGrantQualificationResponse, error) {
 
@@ -844,7 +844,7 @@ func (client AmtClient) GrantQualification(qualificationRequestId string,
 
 // NotifyWorkers sends an email to one or more Workers that you specify with
 // the Worker ID.
-func (client AmtClient) NotifyWorkers(subject, messageText string,
+func (client amtClient) NotifyWorkers(subject, messageText string,
 	workerIds []string) (amtgen.TxsdNotifyWorkersResponse, error) {
 
 	// Prepare the request
@@ -869,7 +869,7 @@ func (client AmtClient) NotifyWorkers(subject, messageText string,
 }
 
 // RegisterHITType creates a new HIT type.
-func (client AmtClient) RegisterHITType(title, description string,
+func (client amtClient) RegisterHITType(title, description string,
 	reward float32, assignmentDurationInSeconds, autoApprovalDelayInSeconds int,
 	keywords []string,
 	qualificationRequirements []*amtgen.TQualificationRequirement) (
@@ -901,7 +901,7 @@ func (client AmtClient) RegisterHITType(title, description string,
 }
 
 // RejectAssignment rejects the results of a completed assignment.
-func (client AmtClient) RejectAssignment(assignmentId,
+func (client amtClient) RejectAssignment(assignmentId,
 	requesterFeedback string) (
 	amtgen.TxsdRejectAssignmentResponse, error) {
 
@@ -924,7 +924,7 @@ func (client AmtClient) RejectAssignment(assignmentId,
 }
 
 // RejectQualificationRequest rejects a user's request for a Qualification.
-func (client AmtClient) RejectQualificationRequest(qualificationRequestId,
+func (client amtClient) RejectQualificationRequest(qualificationRequestId,
 	reason string) (
 	amtgen.TxsdRejectQualificationRequestResponse, error) {
 
@@ -947,7 +947,7 @@ func (client AmtClient) RejectQualificationRequest(qualificationRequestId,
 }
 
 // RevokeQualification revokes a previously granted Qualification from a user.
-func (client AmtClient) RevokeQualification(subjectId, qualificationTypeId,
+func (client amtClient) RevokeQualification(subjectId, qualificationTypeId,
 	reason string) (
 	amtgen.TxsdRevokeQualificationResponse, error) {
 
@@ -971,7 +971,7 @@ func (client AmtClient) RevokeQualification(subjectId, qualificationTypeId,
 }
 
 // SearchHITs returns all of a Requester's HITs, on behalf of the Requester.
-func (client AmtClient) SearchHITs(sortProperty string, sortAscending bool,
+func (client amtClient) SearchHITs(sortProperty string, sortAscending bool,
 	pageSize, pageNumber int) (
 	amtgen.TxsdSearchHITsResponse, error) {
 
@@ -1001,7 +1001,7 @@ func (client AmtClient) SearchHITs(sortProperty string, sortAscending bool,
 
 // SearchQualificationTypes searches for Qualification types using the specified
 // search query, and returns a list of Qualification types.
-func (client AmtClient) SearchQualificationTypes(
+func (client amtClient) SearchQualificationTypes(
 	query, sortProperty string, sortAscending bool,
 	pageSize, pageNumber int, mustBeRequestable, mustBeOwnedByCaller bool) (
 	amtgen.TxsdSearchQualificationTypesResponse, error) {
@@ -1036,7 +1036,7 @@ func (client AmtClient) SearchQualificationTypes(
 // SendTestEventNotification causes Amazon Mechanical Turk to send a
 // notification message as if a HIT event occurred, according to the provided
 // notification specification.
-func (client AmtClient) SendTestEventNotification(
+func (client amtClient) SendTestEventNotification(
 	notification *amtgen.TNotificationSpecification, testEventType string) (
 	amtgen.TxsdSendTestEventNotificationResponse, error) {
 
@@ -1061,7 +1061,7 @@ func (client AmtClient) SendTestEventNotification(
 // SetHITAsReviewing updates the status of a HIT. If the status is Reviewable,
 // this operation updates the status to Reviewing, or reverts a Reviewing HIT
 // back to the Reviewable status.
-func (client AmtClient) SetHITAsReviewing(hitID string, revert bool) (
+func (client amtClient) SetHITAsReviewing(hitID string, revert bool) (
 	amtgen.TxsdSetHITAsReviewingResponse, error) {
 
 	// Prepare the request
@@ -1084,7 +1084,7 @@ func (client AmtClient) SetHITAsReviewing(hitID string, revert bool) (
 
 // SetHITTypeNotification creates, updates, disables or re-enables notifications
 // for a HIT type.
-func (client AmtClient) SetHITTypeNotification(hitTypeID string,
+func (client amtClient) SetHITTypeNotification(hitTypeID string,
 	notification *amtgen.TNotificationSpecification, active bool) (
 	amtgen.TxsdSetHITTypeNotificationResponse, error) {
 
@@ -1108,7 +1108,7 @@ func (client AmtClient) SetHITTypeNotification(hitTypeID string,
 }
 
 // UnblockWorker allows you to reinstate a blocked Worker to work on your HITs.
-func (client AmtClient) UnblockWorker(workerId, reason string) (
+func (client amtClient) UnblockWorker(workerId, reason string) (
 	amtgen.TxsdUnblockWorkerResponse, error) {
 
 	// Prepare the request
@@ -1131,7 +1131,7 @@ func (client AmtClient) UnblockWorker(workerId, reason string) (
 
 // UpdateQualificationScore changes the value of a Qualification previously
 // granted to a Worker.
-func (client AmtClient) UpdateQualificationScore(qualificationTypeId,
+func (client amtClient) UpdateQualificationScore(qualificationTypeId,
 	subjectId string, integerValue int) (
 	amtgen.TxsdUpdateQualificationScoreResponse, error) {
 
@@ -1156,7 +1156,7 @@ func (client AmtClient) UpdateQualificationScore(qualificationTypeId,
 
 // UpdateQualificationType modifies the attributes of an existing Qualification
 // type.
-func (client AmtClient) UpdateQualificationType(qualificationTypeId string,
+func (client amtClient) UpdateQualificationType(qualificationTypeId string,
 	retryDelayInSeconds int, qualificationTypeStatus, description, test,
 	answerKey string, testDurationInSeconds int, autoGranted bool,
 	autoGrantedValue int) (

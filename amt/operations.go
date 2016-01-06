@@ -135,9 +135,7 @@ func (client AmtClient) CreateHIT(title, description, question string,
 
 	// Prepare the request
 	var (
-		request  amtgen.TxsdCreateHIT
-		args     amtgen.TCreateHITRequest
-		response amtgen.TxsdCreateHITResponse
+		args amtgen.TCreateHITRequest
 	)
 	args.Title = xsdt.String(title)
 	args.Description = xsdt.String(description)
@@ -168,14 +166,7 @@ func (client AmtClient) CreateHIT(title, description, question string,
 	args.HITReviewPolicy = hitReviewPolicy
 	args.RequesterAnnotation = xsdt.String(requesterAnnotation)
 	args.UniqueRequestToken = xsdt.String(uniqueRequestToken)
-	request.Requests = append(request.Requests, &args)
-
-	// Send the request
-	req, err := client.signRequest("CreateHIT", &request)
-	if err == nil {
-		err = client.sendRequest(req, &response)
-	}
-	return response, err
+	return client.CreateHITFromArgs(args)
 }
 
 // CreateHITFromHITTypeId creates a new Human Intelligence Task (HIT) from a
@@ -189,9 +180,7 @@ func (client AmtClient) CreateHITFromHITTypeId(hitTypeId, question string,
 
 	// Prepare the request
 	var (
-		request  amtgen.TxsdCreateHIT
-		args     amtgen.TCreateHITRequest
-		response amtgen.TxsdCreateHITResponse
+		args amtgen.TCreateHITRequest
 	)
 	args.HITTypeId = xsdt.String(hitTypeId)
 	args.Question = xsdt.String(question)
@@ -214,6 +203,19 @@ func (client AmtClient) CreateHITFromHITTypeId(hitTypeId, question string,
 	args.HITReviewPolicy = hitReviewPolicy
 	args.RequesterAnnotation = xsdt.String(requesterAnnotation)
 	args.UniqueRequestToken = xsdt.String(uniqueRequestToken)
+	return client.CreateHITFromArgs(args)
+}
+
+// CreateHITFromArgs creates a new Human Intelligence Task (HIT) from the given
+// argument values.
+func (client AmtClient) CreateHITFromArgs(args amtgen.TCreateHITRequest) (
+	amtgen.TxsdCreateHITResponse, error) {
+
+	// Prepare the request
+	var (
+		request  amtgen.TxsdCreateHIT
+		response amtgen.TxsdCreateHITResponse
+	)
 	request.Requests = append(request.Requests, &args)
 
 	// Send the request

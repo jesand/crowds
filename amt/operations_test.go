@@ -71,23 +71,27 @@ func TestApproveAssignment(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call ApproveAssignment", func() {
-			srvResponse = `
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<ApproveAssignmentResponse>` +
+				`<OperationRequest>` +
+				`<RequestId>5d38ca17-77d6-4caa-b3f0-7cabc17c56ad</RequestId>` +
+				`</OperationRequest>
 				<ApproveAssignmentResult>
 					<Request>
 						<IsValid>True</IsValid>
 					</Request>
 				</ApproveAssignmentResult>
+				</ApproveAssignmentResponse>
 				`
 			result, err := client.ApproveAssignment(ASSIGNMENT_ID, FEEDBACK)
 			Convey("Then the correct result was returned", func() {
 				var (
-					exp amtgen.TxsdApproveAssignmentResponse
 					res amtgen.TApproveAssignmentResult
 				)
-				exp.ApproveAssignmentResults = append(exp.ApproveAssignmentResults, &res)
 				res.Request = &amtgen.TxsdRequest{}
 				res.Request.IsValid = "True"
-				So(result, ShouldResemble, exp)
+				So(result.ApproveAssignmentResults, ShouldHaveLength, 1)
+				So(result.ApproveAssignmentResults[0], ShouldResemble, &res)
 			})
 			Convey("Then the operation succeeded", func() {
 				So(err, ShouldBeNil)
@@ -113,22 +117,26 @@ func TestApproveRejectedAssignment(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call ApproveRejectedAssignment", func() {
-			srvResponse = `
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<ApproveRejectedAssignmentResponse>` +
+				`<OperationRequest>` +
+				`<RequestId>5d38ca17-77d6-4caa-b3f0-7cabc17c56ad</RequestId>` +
+				`</OperationRequest>
 				<ApproveRejectedAssignmentResult>
 					<Request>
 						<IsValid>True</IsValid>
 					</Request>
-				</ApproveRejectedAssignmentResult>`
+				</ApproveRejectedAssignmentResult>
+				</ApproveRejectedAssignmentResponse>`
 			result, err := client.ApproveRejectedAssignment(ASSIGNMENT_ID, FEEDBACK)
 			Convey("Then the correct result was returned", func() {
 				var (
-					exp amtgen.TxsdApproveRejectedAssignmentResponse
 					res amtgen.TApproveRejectedAssignmentResult
 				)
-				exp.ApproveRejectedAssignmentResults = append(exp.ApproveRejectedAssignmentResults, &res)
 				res.Request = &amtgen.TxsdRequest{}
 				res.Request.IsValid = "True"
-				So(result, ShouldResemble, exp)
+				So(result.ApproveRejectedAssignmentResults, ShouldHaveLength, 1)
+				So(result.ApproveRejectedAssignmentResults[0], ShouldResemble, &res)
 			})
 			Convey("Then the operation succeeded", func() {
 				So(err, ShouldBeNil)
@@ -154,22 +162,26 @@ func TestAssignQualification(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call AssignQualification", func() {
-			srvResponse = `
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<AssignQualificationResponse>` +
+				`<OperationRequest>` +
+				`<RequestId>5d38ca17-77d6-4caa-b3f0-7cabc17c56ad</RequestId>` +
+				`</OperationRequest>
 				<AssignQualificationResult>
 					<Request>
 						<IsValid>True</IsValid>
 					</Request>
-				</AssignQualificationResult>`
+				</AssignQualificationResult>
+				</AssignQualificationResponse>`
 			result, err := client.AssignQualification(QUAL_ID, WORKER_ID, QUAL_VALUE, false)
 			Convey("Then the correct result was returned", func() {
 				var (
-					exp amtgen.TxsdAssignQualificationResponse
 					res amtgen.TAssignQualificationResult
 				)
-				exp.AssignQualificationResults = append(exp.AssignQualificationResults, &res)
 				res.Request = &amtgen.TxsdRequest{}
 				res.Request.IsValid = "True"
-				So(result, ShouldResemble, exp)
+				So(result.AssignQualificationResults, ShouldHaveLength, 1)
+				So(result.AssignQualificationResults[0], ShouldResemble, &res)
 			})
 			Convey("Then the operation succeeded", func() {
 				So(err, ShouldBeNil)
@@ -196,22 +208,26 @@ func TestBlockWorker(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call BlockWorker", func() {
-			srvResponse = `
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<BlockWorkerResponse>` +
+				`<OperationRequest>` +
+				`<RequestId>5d38ca17-77d6-4caa-b3f0-7cabc17c56ad</RequestId>` +
+				`</OperationRequest>
 				<BlockWorkerResult>
 					<Request>
 						<IsValid>True</IsValid>
 					</Request>
-				</BlockWorkerResult>`
+				</BlockWorkerResult>
+				</BlockWorkerResponse>`
 			result, err := client.BlockWorker(WORKER_ID, FEEDBACK)
 			Convey("Then the correct result was returned", func() {
 				var (
-					exp amtgen.TxsdBlockWorkerResponse
 					res amtgen.TBlockWorkerResult
 				)
-				exp.BlockWorkerResults = append(exp.BlockWorkerResults, &res)
 				res.Request = &amtgen.TxsdRequest{}
 				res.Request.IsValid = "True"
-				So(result, ShouldResemble, exp)
+				So(result.BlockWorkerResults, ShouldHaveLength, 1)
+				So(result.BlockWorkerResults[0], ShouldResemble, &res)
 			})
 			Convey("Then the operation succeeded", func() {
 				So(err, ShouldBeNil)
@@ -237,22 +253,26 @@ func TestChangeHITTypeOfHIT(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call ChangeHITTypeOfHIT", func() {
-			srvResponse = `
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<ChangeHITTypeOfHITResponse>` +
+				`<OperationRequest>` +
+				`<RequestId>5d38ca17-77d6-4caa-b3f0-7cabc17c56ad</RequestId>` +
+				`</OperationRequest>
 				<ChangeHITTypeOfHITResult>
 					<Request>
 						<IsValid>True</IsValid>
 					</Request>
-				</ChangeHITTypeOfHITResult>`
+				</ChangeHITTypeOfHITResult>
+				</ChangeHITTypeOfHITResponse>`
 			result, err := client.ChangeHITTypeOfHIT(HIT_ID, HIT_TYPE_ID)
 			Convey("Then the correct result was returned", func() {
 				var (
-					exp amtgen.TxsdChangeHITTypeOfHITResponse
 					res amtgen.TChangeHITTypeOfHITResult
 				)
-				exp.ChangeHITTypeOfHITResults = append(exp.ChangeHITTypeOfHITResults, &res)
 				res.Request = &amtgen.TxsdRequest{}
 				res.Request.IsValid = "True"
-				So(result, ShouldResemble, exp)
+				So(result.ChangeHITTypeOfHITResults, ShouldHaveLength, 1)
+				So(result.ChangeHITTypeOfHITResults[0], ShouldResemble, &res)
 			})
 			Convey("Then the operation succeeded", func() {
 				So(err, ShouldBeNil)
@@ -278,8 +298,8 @@ func TestCreateHIT(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call CreateHIT", func() {
-			srvResponse = `
-				<CreateHITResponse>
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<CreateHITResponse>
 					<OperationRequest>
 						<RequestId>` + REQUEST_ID + `</RequestId>
 					</OperationRequest>
@@ -347,8 +367,8 @@ func TestCreateHITFromHITTypeId(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call CreateHITFromHITTypeId", func() {
-			srvResponse = `
-				<CreateHITResponse>
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<CreateHITResponse>
 					<OperationRequest>
 						<RequestId>` + REQUEST_ID + `</RequestId>
 					</OperationRequest>
@@ -411,8 +431,8 @@ func TestCreateQualificationType(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call CreateQualificationType", func() {
-			srvResponse = `
-				<CreateQualificationTypeResponse>
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<CreateQualificationTypeResponse>
 					<OperationRequest>
 						<RequestId>` + REQUEST_ID + `</RequestId>
 					</OperationRequest>
@@ -483,22 +503,26 @@ func TestDisableHIT(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call DisableHIT", func() {
-			srvResponse = `
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<DisableHITResponse>` +
+				`<OperationRequest>` +
+				`<RequestId>5d38ca17-77d6-4caa-b3f0-7cabc17c56ad</RequestId>` +
+				`</OperationRequest>
 				<DisableHITResult>
 					<Request>
 						<IsValid>True</IsValid>
 					</Request>
-				</DisableHITResult>`
+				</DisableHITResult>
+				</DisableHITResponse>`
 			result, err := client.DisableHIT(HIT_ID)
 			Convey("Then the correct result was returned", func() {
 				var (
-					exp amtgen.TxsdDisableHITResponse
 					res amtgen.TDisableHITResult
 				)
-				exp.DisableHITResults = append(exp.DisableHITResults, &res)
 				res.Request = &amtgen.TxsdRequest{}
 				res.Request.IsValid = "True"
-				So(result, ShouldResemble, exp)
+				So(result.DisableHITResults, ShouldHaveLength, 1)
+				So(result.DisableHITResults[0], ShouldResemble, &res)
 			})
 			Convey("Then the operation succeeded", func() {
 				So(err, ShouldBeNil)
@@ -523,22 +547,26 @@ func TestDisposeHIT(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call DisposeHIT", func() {
-			srvResponse = `
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<DisposeHITResponse>` +
+				`<OperationRequest>` +
+				`<RequestId>5d38ca17-77d6-4caa-b3f0-7cabc17c56ad</RequestId>` +
+				`</OperationRequest>
 				<DisposeHITResult>
 					<Request>
 						<IsValid>True</IsValid>
 					</Request>
-				</DisposeHITResult>`
+				</DisposeHITResult>
+				</DisposeHITResponse>`
 			result, err := client.DisposeHIT(HIT_ID)
 			Convey("Then the correct result was returned", func() {
 				var (
-					exp amtgen.TxsdDisposeHITResponse
 					res amtgen.TDisposeHITResult
 				)
-				exp.DisposeHITResults = append(exp.DisposeHITResults, &res)
 				res.Request = &amtgen.TxsdRequest{}
 				res.Request.IsValid = "True"
-				So(result, ShouldResemble, exp)
+				So(result.DisposeHITResults, ShouldHaveLength, 1)
+				So(result.DisposeHITResults[0], ShouldResemble, &res)
 			})
 			Convey("Then the operation succeeded", func() {
 				So(err, ShouldBeNil)
@@ -563,22 +591,26 @@ func TestDisposeQualificationType(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call DisposeQualificationType", func() {
-			srvResponse = `
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<DisposeQualificationTypeResponse>` +
+				`<OperationRequest>` +
+				`<RequestId>5d38ca17-77d6-4caa-b3f0-7cabc17c56ad</RequestId>` +
+				`</OperationRequest>
 				<DisposeQualificationTypeResult>
 					<Request>
 						<IsValid>True</IsValid>
 					</Request>
-				</DisposeQualificationTypeResult>`
+				</DisposeQualificationTypeResult>
+				</DisposeQualificationTypeResponse>`
 			result, err := client.DisposeQualificationType(QUAL_ID)
 			Convey("Then the correct result was returned", func() {
 				var (
-					exp amtgen.TxsdDisposeQualificationTypeResponse
 					res amtgen.TDisposeQualificationTypeResult
 				)
-				exp.DisposeQualificationTypeResults = append(exp.DisposeQualificationTypeResults, &res)
 				res.Request = &amtgen.TxsdRequest{}
 				res.Request.IsValid = "True"
-				So(result, ShouldResemble, exp)
+				So(result.DisposeQualificationTypeResults, ShouldHaveLength, 1)
+				So(result.DisposeQualificationTypeResults[0], ShouldResemble, &res)
 			})
 			Convey("Then the operation succeeded", func() {
 				So(err, ShouldBeNil)
@@ -603,22 +635,26 @@ func TestExtendHIT(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call ExtendHIT", func() {
-			srvResponse = `
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<ExtendHITResponse>` +
+				`<OperationRequest>` +
+				`<RequestId>5d38ca17-77d6-4caa-b3f0-7cabc17c56ad</RequestId>` +
+				`</OperationRequest>
 				<ExtendHITResult>
 					<Request>
 						<IsValid>True</IsValid>
 					</Request>
-				</ExtendHITResult>`
+				</ExtendHITResult>
+				</ExtendHITResponse>`
 			result, err := client.ExtendHIT(HIT_ID, 10, 20, "uniqueRequestToken")
 			Convey("Then the correct result was returned", func() {
 				var (
-					exp amtgen.TxsdExtendHITResponse
 					res amtgen.TExtendHITResult
 				)
-				exp.ExtendHITResults = append(exp.ExtendHITResults, &res)
 				res.Request = &amtgen.TxsdRequest{}
 				res.Request.IsValid = "True"
-				So(result, ShouldResemble, exp)
+				So(result.ExtendHITResults, ShouldHaveLength, 1)
+				So(result.ExtendHITResults[0], ShouldResemble, &res)
 			})
 			Convey("Then the operation succeeded", func() {
 				So(err, ShouldBeNil)
@@ -646,22 +682,26 @@ func TestForceExpireHIT(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call ForceExpireHIT", func() {
-			srvResponse = `
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<ForceExpireHITResponse>` +
+				`<OperationRequest>` +
+				`<RequestId>5d38ca17-77d6-4caa-b3f0-7cabc17c56ad</RequestId>` +
+				`</OperationRequest>
 				<ForceExpireHITResult>
 					<Request>
 						<IsValid>True</IsValid>
 					</Request>
-				</ForceExpireHITResult>`
+				</ForceExpireHITResult>
+				</ForceExpireHITResponse>`
 			result, err := client.ForceExpireHIT(HIT_ID)
 			Convey("Then the correct result was returned", func() {
 				var (
-					exp amtgen.TxsdForceExpireHITResponse
 					res amtgen.TForceExpireHITResult
 				)
-				exp.ForceExpireHITResults = append(exp.ForceExpireHITResults, &res)
 				res.Request = &amtgen.TxsdRequest{}
 				res.Request.IsValid = "True"
-				So(result, ShouldResemble, exp)
+				So(result.ForceExpireHITResults, ShouldHaveLength, 1)
+				So(result.ForceExpireHITResults[0], ShouldResemble, &res)
 			})
 			Convey("Then the operation succeeded", func() {
 				So(err, ShouldBeNil)
@@ -686,32 +726,38 @@ func TestGetAccountBalance(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call GetAccountBalance", func() {
-			srvResponse = `
-				<GetAccountBalanceResult>
-					<Request>
-						<IsValid>True</IsValid>
-					</Request>
-					<AvailableBalance>
-						<Amount>10000.000</Amount>
-						<CurrencyCode>USD</CurrencyCode>
-						<FormattedPrice>$10,000.00</FormattedPrice>
-					</AvailableBalance>
-				</GetAccountBalanceResult>`
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<GetAccountBalanceResponse>` +
+				`<OperationRequest>` +
+				`<RequestId>5d38ca17-77d6-4caa-b3f0-7cabc17c56ad</RequestId>` +
+				`</OperationRequest>` +
+				`<GetAccountBalanceResult>` +
+				`<Request>` +
+				`<IsValid>True</IsValid>` +
+				`</Request>` +
+				`<AvailableBalance>` +
+				`<Amount>10000.000</Amount>` +
+				`<CurrencyCode>USD</CurrencyCode>` +
+				`<FormattedPrice>$10,000.00</FormattedPrice>` +
+				`</AvailableBalance>` +
+				`</GetAccountBalanceResult>` +
+				`</GetAccountBalanceResponse>`
 			result, err := client.GetAccountBalance()
+			So(err, ShouldBeNil)
 			Convey("Then the correct result was returned", func() {
 				var (
-					exp amtgen.TxsdGetAccountBalanceResponse
 					res amtgen.TGetAccountBalanceResult
 					bal amtgen.TPrice
 				)
-				exp.GetAccountBalanceResults = append(exp.GetAccountBalanceResults, &res)
-				res.Request = &amtgen.TxsdRequest{}
-				res.Request.IsValid = "True"
-				res.AvailableBalance = &bal
 				bal.Amount = xsdt.Decimal("10000.000")
 				bal.CurrencyCode = "USD"
 				bal.FormattedPrice = "$10,000.00"
-				So(result, ShouldResemble, exp)
+				res.Request = &amtgen.TxsdRequest{}
+				res.Request.IsValid = "True"
+				res.AvailableBalance = &bal
+				So(result.GetAccountBalanceResults, ShouldHaveLength, 1)
+				So(result.GetAccountBalanceResults[0].AvailableBalance, ShouldResemble, &bal)
+				So(result.GetAccountBalanceResults[0], ShouldResemble, &res)
 			})
 			Convey("Then the operation succeeded", func() {
 				So(err, ShouldBeNil)
@@ -735,7 +781,11 @@ func TestGetAssignment(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call GetAssignment", func() {
-			srvResponse = `
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<GetAssignmentResponse>` +
+				`<OperationRequest>` +
+				`<RequestId>5d38ca17-77d6-4caa-b3f0-7cabc17c56ad</RequestId>` +
+				`</OperationRequest>
 				<GetAssignmentResult>
 					<Request>
 						<IsValid>True</IsValid>
@@ -779,14 +829,13 @@ func TestGetAssignment(t *testing.T) {
 						<NumberOfSimilarHITs>1</NumberOfSimilarHITs>
 						<HITReviewStatus>NotReviewed</HITReviewStatus>
 					</HIT>
-				</GetAssignmentResult>`
+				</GetAssignmentResult>
+				</GetAssignmentResponse>`
 			result, err := client.GetAssignment(ASSIGNMENT_ID)
 			Convey("Then the correct result was returned", func() {
 				var (
-					exp amtgen.TxsdGetAssignmentResponse
 					res amtgen.TGetAssignmentResult
 				)
-				exp.GetAssignmentResults = append(exp.GetAssignmentResults, &res)
 				res.Request = &amtgen.TxsdRequest{}
 				res.Request.IsValid = "True"
 				res.Assignment = &amtgen.TAssignment{}
@@ -826,8 +875,9 @@ func TestGetAssignment(t *testing.T) {
 				res.Hit.AssignmentDurationInSeconds = 30
 				res.Hit.HITReviewStatus = "NotReviewed"
 
-				So(result.GetAssignmentResults[0].Hit, ShouldResemble, exp.GetAssignmentResults[0].Hit)
-				So(result, ShouldResemble, exp)
+				So(result.GetAssignmentResults, ShouldHaveLength, 1)
+				So(result.GetAssignmentResults[0].Hit, ShouldResemble, res.Hit)
+				So(result.GetAssignmentResults[0], ShouldResemble, &res)
 			})
 			Convey("Then the operation succeeded", func() {
 				So(err, ShouldBeNil)
@@ -852,7 +902,11 @@ func TestGetAssignmentsForHIT(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call GetAssignmentsForHIT", func() {
-			srvResponse = `
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<GetAssignmentsForHITResponse>` +
+				`<OperationRequest>` +
+				`<RequestId>5d38ca17-77d6-4caa-b3f0-7cabc17c56ad</RequestId>` +
+				`</OperationRequest>
 				<GetAssignmentsForHITResult>
 					<Request>
 						<IsValid>True</IsValid>
@@ -875,15 +929,14 @@ func TestGetAssignmentsForHIT(t *testing.T) {
 							&lt;/QuestionFormAnswers&gt;
 						</Answer>
 					</Assignment>
-				</GetAssignmentsForHITResult>`
+				</GetAssignmentsForHITResult>
+				</GetAssignmentsForHITResponse>`
 			result, err := client.GetAssignmentsForHIT(HIT_ID,
 				[]string{"status1", "status2"}, "sortProperty", true, 10, 20)
 			Convey("Then the correct result was returned", func() {
 				var (
-					exp amtgen.TxsdGetAssignmentsForHITResponse
 					res amtgen.TGetAssignmentsForHITResult
 				)
-				exp.GetAssignmentsForHITResults = append(exp.GetAssignmentsForHITResults, &res)
 				res.Request = &amtgen.TxsdRequest{}
 				res.Request.IsValid = "True"
 				res.NumResults = 1
@@ -903,8 +956,11 @@ func TestGetAssignmentsForHIT(t *testing.T) {
 								[XML-formatted answer]
 							</QuestionFormAnswers>
 						`
-				So(result.GetAssignmentsForHITResults[0].Assignments[0], ShouldResemble, exp.GetAssignmentsForHITResults[0].Assignments[0])
-				So(result, ShouldResemble, exp)
+
+				So(result.GetAssignmentsForHITResults, ShouldHaveLength, 1)
+				So(result.GetAssignmentsForHITResults[0].Assignments, ShouldHaveLength, 1)
+				So(result.GetAssignmentsForHITResults[0].Assignments[0], ShouldResemble, res.Assignments[0])
+				So(result.GetAssignmentsForHITResults[0], ShouldResemble, &res)
 			})
 			Convey("Then the operation succeeded", func() {
 				So(err, ShouldBeNil)
@@ -934,7 +990,11 @@ func TestGetBlockedWorkers(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call GetBlockedWorkers", func() {
-			srvResponse = `
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<GetBlockedWorkersResponse>` +
+				`<OperationRequest>` +
+				`<RequestId>5d38ca17-77d6-4caa-b3f0-7cabc17c56ad</RequestId>` +
+				`</OperationRequest>
 				<GetBlockedWorkersResult>
 					<Request>
 						<IsValid>True</IsValid>
@@ -950,14 +1010,13 @@ func TestGetBlockedWorkers(t *testing.T) {
 						<WorkerId>A2QWESAMPLE2</WorkerId>
 						<Reason>Poor Quality Work on Photo Moderation</Reason>
 					</WorkerBlock>
-				</GetBlockedWorkersResult>`
+				</GetBlockedWorkersResult>
+				</GetBlockedWorkersResponse>`
 			result, err := client.GetBlockedWorkers(10, 20)
 			Convey("Then the correct result was returned", func() {
 				var (
-					exp amtgen.TxsdGetBlockedWorkersResponse
 					res amtgen.TGetBlockedWorkersResult
 				)
-				exp.GetBlockedWorkersResults = append(exp.GetBlockedWorkersResults, &res)
 				res.Request = &amtgen.TxsdRequest{}
 				res.Request.IsValid = "True"
 				res.PageNumber = 1
@@ -969,8 +1028,8 @@ func TestGetBlockedWorkers(t *testing.T) {
 				res.WorkerBlocks[0].Reason = "Poor Quality Work on Categorization"
 				res.WorkerBlocks[1].WorkerId = "A2QWESAMPLE2"
 				res.WorkerBlocks[1].Reason = "Poor Quality Work on Photo Moderation"
+				So(result.GetBlockedWorkersResults, ShouldHaveLength, 1)
 				So(result.GetBlockedWorkersResults[0], ShouldResemble, &res)
-				So(result, ShouldResemble, exp)
 			})
 			Convey("Then the operation succeeded", func() {
 				So(err, ShouldBeNil)
@@ -996,7 +1055,11 @@ func TestGetBonusPayments(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call GetBonusPayments", func() {
-			srvResponse = `
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<GetBonusPaymentsResponse>` +
+				`<OperationRequest>` +
+				`<RequestId>5d38ca17-77d6-4caa-b3f0-7cabc17c56ad</RequestId>` +
+				`</OperationRequest>
 				<GetBonusPaymentsResult>
 					<Request>
 						<IsValid>True</IsValid>
@@ -1004,20 +1067,20 @@ func TestGetBonusPayments(t *testing.T) {
 					<NumResults>0</NumResults>
 					<TotalNumResults>0</TotalNumResults>
 					<PageNumber>1</PageNumber>
-				</GetBonusPaymentsResult>`
+				</GetBonusPaymentsResult>
+				</GetBonusPaymentsResponse>`
 			result, err := client.GetBonusPayments(HIT_ID, ASSIGNMENT_ID, 10, 20)
 			Convey("Then the correct result was returned", func() {
 				var (
-					exp amtgen.TxsdGetBonusPaymentsResponse
 					res amtgen.TGetBonusPaymentsResult
 				)
-				exp.GetBonusPaymentsResults = append(exp.GetBonusPaymentsResults, &res)
 				res.Request = &amtgen.TxsdRequest{}
 				res.Request.IsValid = "True"
 				res.PageNumber = 1
 				res.NumResults = 0
 				res.TotalNumResults = 0
-				So(result, ShouldResemble, exp)
+				So(result.GetBonusPaymentsResults, ShouldHaveLength, 1)
+				So(result.GetBonusPaymentsResults[0], ShouldResemble, &res)
 			})
 			Convey("Then the operation succeeded", func() {
 				So(err, ShouldBeNil)
@@ -1045,24 +1108,28 @@ func TestGetFileUploadURL(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call GetFileUploadURL", func() {
-			srvResponse = `
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<GetFileUploadURLResponse>` +
+				`<OperationRequest>` +
+				`<RequestId>5d38ca17-77d6-4caa-b3f0-7cabc17c56ad</RequestId>` +
+				`</OperationRequest>
 				<GetFileUploadURLResult>
 					<Request>
 						<IsValid>True</IsValid>
 					</Request>
 					<FileUploadURL>http://s3.amazonaws.com/myawsbucket/puppy.jpg</FileUploadURL>
-				</GetFileUploadURLResult>`
+				</GetFileUploadURLResult>
+				</GetFileUploadURLResponse>`
 			result, err := client.GetFileUploadURL(ASSIGNMENT_ID, "questionIdentifier")
 			Convey("Then the correct result was returned", func() {
 				var (
-					exp amtgen.TxsdGetFileUploadURLResponse
 					res amtgen.TGetFileUploadURLResult
 				)
-				exp.GetFileUploadURLResults = append(exp.GetFileUploadURLResults, &res)
 				res.Request = &amtgen.TxsdRequest{}
 				res.Request.IsValid = "True"
 				res.FileUploadURL = "http://s3.amazonaws.com/myawsbucket/puppy.jpg"
-				So(result, ShouldResemble, exp)
+				So(result.GetFileUploadURLResults, ShouldHaveLength, 1)
+				So(result.GetFileUploadURLResults[0], ShouldResemble, &res)
 			})
 			Convey("Then the operation succeeded", func() {
 				So(err, ShouldBeNil)
@@ -1088,7 +1155,11 @@ func TestGetHIT(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call GetHIT", func() {
-			srvResponse = `
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<GetHITResponse>` +
+				`<OperationRequest>` +
+				`<RequestId>5d38ca17-77d6-4caa-b3f0-7cabc17c56ad</RequestId>` +
+				`</OperationRequest>
 				<HIT>
 					<Request>
 						<IsValid>True</IsValid>
@@ -1115,14 +1186,13 @@ func TestGetHIT(t *testing.T) {
 					<AssignmentDurationInSeconds>30</AssignmentDurationInSeconds>
 					<NumberOfSimilarHITs>1</NumberOfSimilarHITs>
 					<HITReviewStatus>NotReviewed</HITReviewStatus>
-				</HIT>`
+				</HIT>
+				</GetHITResponse>`
 			result, err := client.GetHIT(HIT_ID)
 			Convey("Then the correct result was returned", func() {
 				var (
-					exp amtgen.TxsdGetHITResponse
 					res amtgen.Thit
 				)
-				exp.Hits = append(exp.Hits, &res)
 				res.Request = &amtgen.TxsdRequest{}
 				res.Request.IsValid = "True"
 				res.HITId = "ZZRZPTY4ERDZWJ868JCZ"
@@ -1145,8 +1215,8 @@ func TestGetHIT(t *testing.T) {
 				res.Expiration = "2009-07-14T00:56:40Z"
 				res.AssignmentDurationInSeconds = 30
 				res.HITReviewStatus = "NotReviewed"
+				So(result.Hits, ShouldHaveLength, 1)
 				So(result.Hits[0], ShouldResemble, &res)
-				So(result, ShouldResemble, exp)
 			})
 			Convey("Then the operation succeeded", func() {
 				So(err, ShouldBeNil)
@@ -1171,7 +1241,11 @@ func TestGetHITsForQualificationType(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call GetHITsForQualificationType", func() {
-			srvResponse = `
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<GetHITsForQualificationTypeResponse>` +
+				`<OperationRequest>` +
+				`<RequestId>5d38ca17-77d6-4caa-b3f0-7cabc17c56ad</RequestId>` +
+				`</OperationRequest>
 				<GetHITsForQualificationTypeResult>
 					<Request>
 						<IsValid>True</IsValid>
@@ -1208,14 +1282,13 @@ func TestGetHITsForQualificationType(t *testing.T) {
 						</QualificationRequirement>
 						<HITReviewStatus>NotReviewed</HITReviewStatus>
 					</HIT>
-				</GetHITsForQualificationTypeResult>`
+				</GetHITsForQualificationTypeResult>
+				</GetHITsForQualificationTypeResponse>`
 			result, err := client.GetHITsForQualificationType(QUAL_ID, 10, 20)
 			Convey("Then the correct result was returned", func() {
 				var (
-					exp amtgen.TxsdGetHITsForQualificationTypeResponse
 					res amtgen.TGetHITsForQualificationTypeResult
 				)
-				exp.GetHITsForQualificationTypeResults = append(exp.GetHITsForQualificationTypeResults, &res)
 				res.Request = &amtgen.TxsdRequest{}
 				res.Request.IsValid = "True"
 				res.NumResults = 1
@@ -1247,10 +1320,13 @@ func TestGetHITsForQualificationType(t *testing.T) {
 				res.Hits[0].QualificationRequirements[0].Comparator = "GreaterThan"
 				res.Hits[0].QualificationRequirements[0].IntegerValues = []xsdt.Int{18}
 				res.Hits[0].HITReviewStatus = "NotReviewed"
+				So(result.GetHITsForQualificationTypeResults, ShouldHaveLength, 1)
+				So(result.GetHITsForQualificationTypeResults[0].Hits, ShouldHaveLength, 1)
 				So(result.GetHITsForQualificationTypeResults[0].Hits[0].Reward, ShouldResemble, res.Hits[0].Reward)
+				So(result.GetHITsForQualificationTypeResults[0].Hits[0].QualificationRequirements, ShouldHaveLength, 1)
 				So(result.GetHITsForQualificationTypeResults[0].Hits[0].QualificationRequirements[0], ShouldResemble, res.Hits[0].QualificationRequirements[0])
 				So(result.GetHITsForQualificationTypeResults[0].Hits[0], ShouldResemble, res.Hits[0])
-				So(result, ShouldResemble, exp)
+				So(result.GetHITsForQualificationTypeResults[0], ShouldResemble, &res)
 			})
 			Convey("Then the operation succeeded", func() {
 				So(err, ShouldBeNil)
@@ -1280,7 +1356,11 @@ func TestGetQualificationsForQualificationType(t *testing.T) {
 			// Note: this is not the response from the API docs. The API docs
 			// have a QualificationRequest instead of a Qualification, which
 			// is counter to the .xsd and the expectation for this API call.
-			srvResponse = `
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<GetQualificationsForQualificationTypeResponse>` +
+				`<OperationRequest>` +
+				`<RequestId>5d38ca17-77d6-4caa-b3f0-7cabc17c56ad</RequestId>` +
+				`</OperationRequest>
 				<GetQualificationsForQualificationTypeResult>
 					<Request>
 						<IsValid>True</IsValid>
@@ -1294,15 +1374,14 @@ func TestGetQualificationsForQualificationType(t *testing.T) {
 						<GrantTime>2005-01-31T23:59:59Z</GrantTime>
 						<IntegerValue>95</IntegerValue>
 					</Qualification>
-				</GetQualificationsForQualificationTypeResult>`
+				</GetQualificationsForQualificationTypeResult>
+				</GetQualificationsForQualificationTypeResponse>`
 			result, err := client.GetQualificationsForQualificationType(
 				QUAL_ID, true, 10, 20)
 			Convey("Then the correct result was returned", func() {
 				var (
-					exp amtgen.TxsdGetQualificationsForQualificationTypeResponse
 					res amtgen.TGetQualificationsForQualificationTypeResult
 				)
-				exp.GetQualificationsForQualificationTypeResults = append(exp.GetQualificationsForQualificationTypeResults, &res)
 				res.Request = &amtgen.TxsdRequest{}
 				res.Request.IsValid = "True"
 				res.NumResults = 1
@@ -1313,7 +1392,8 @@ func TestGetQualificationsForQualificationType(t *testing.T) {
 				res.Qualifications[0].SubjectId = "AZ3456EXAMPLE"
 				res.Qualifications[0].GrantTime = "2005-01-31T23:59:59Z"
 				res.Qualifications[0].IntegerValue = 95
-				So(result, ShouldResemble, exp)
+				So(result.GetQualificationsForQualificationTypeResults, ShouldHaveLength, 1)
+				So(result.GetQualificationsForQualificationTypeResults[0], ShouldResemble, &res)
 			})
 			Convey("Then the operation succeeded", func() {
 				So(err, ShouldBeNil)
@@ -1341,7 +1421,11 @@ func TestGetQualificationRequests(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call GetQualificationRequests", func() {
-			srvResponse = `
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<GetQualificationRequestsResponse>` +
+				`<OperationRequest>` +
+				`<RequestId>5d38ca17-77d6-4caa-b3f0-7cabc17c56ad</RequestId>` +
+				`</OperationRequest>
 				<GetQualificationRequestsResult>
 					<Request>
 						<IsValid>True</IsValid>
@@ -1365,14 +1449,13 @@ func TestGetQualificationRequests(t *testing.T) {
 						</Answer>
 						<SubmitTime>2005-12-01T23:59:59Z</SubmitTime>
 					</QualificationRequest>
-				</GetQualificationRequestsResult>`
+				</GetQualificationRequestsResult>
+				</GetQualificationRequestsResponse>`
 			result, err := client.GetQualificationRequests(QUAL_ID, "sortProperty", true, 10, 20)
 			Convey("Then the correct result was returned", func() {
 				var (
-					exp amtgen.TxsdGetQualificationRequestsResponse
 					res amtgen.TGetQualificationRequestsResult
 				)
-				exp.GetQualificationRequestsResults = append(exp.GetQualificationRequestsResults, &res)
 				res.Request = &amtgen.TxsdRequest{}
 				res.Request.IsValid = "True"
 				res.NumResults = 1
@@ -1393,8 +1476,10 @@ func TestGetQualificationRequests(t *testing.T) {
 							</QuestionFormAnswers>
 						`
 				res.QualificationRequests[0].SubmitTime = "2005-12-01T23:59:59Z"
+				So(result.GetQualificationRequestsResults, ShouldHaveLength, 1)
+				So(result.GetQualificationRequestsResults[0].QualificationRequests, ShouldHaveLength, 1)
 				So(result.GetQualificationRequestsResults[0].QualificationRequests[0], ShouldResemble, res.QualificationRequests[0])
-				So(result, ShouldResemble, exp)
+				So(result.GetQualificationRequestsResults[0], ShouldResemble, &res)
 			})
 			Convey("Then the operation succeeded", func() {
 				So(err, ShouldBeNil)
@@ -1423,27 +1508,29 @@ func TestGetQualificationScore(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call GetQualificationScore", func() {
-			srvResponse = `
-				<GetQualificationScoreResult>
-					<Qualification>
-						<QualificationTypeId>789RVWYBAZW00EXAMPLE</QualificationTypeId>
-						<SubjectId>AZ3456EXAMPLE</SubjectId>
-						<GrantTime>2005-01-31T23:59:59Z</GrantTime>
-						<IntegerValue>95</IntegerValue>
-					</Qualification>
-				</GetQualificationScoreResult>`
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<GetQualificationScoreResponse>` +
+				`<OperationRequest>` +
+				`<RequestId>5d38ca17-77d6-4caa-b3f0-7cabc17c56ad</RequestId>` +
+				`</OperationRequest>
+				<Qualification>
+					<QualificationTypeId>789RVWYBAZW00EXAMPLE</QualificationTypeId>
+					<SubjectId>AZ3456EXAMPLE</SubjectId>
+					<GrantTime>2005-01-31T23:59:59Z</GrantTime>
+					<IntegerValue>95</IntegerValue>
+				</Qualification>
+				</GetQualificationScoreResponse>`
 			result, err := client.GetQualificationScore(QUAL_ID, WORKER_ID)
 			Convey("Then the correct result was returned", func() {
 				var (
-					exp amtgen.TxsdGetQualificationScoreResponse
 					res amtgen.TQualification
 				)
-				exp.Qualifications = append(exp.Qualifications, &res)
 				res.QualificationTypeId = "789RVWYBAZW00EXAMPLE"
 				res.SubjectId = "AZ3456EXAMPLE"
 				res.GrantTime = "2005-01-31T23:59:59Z"
 				res.IntegerValue = 95
-				So(result, ShouldResemble, exp)
+				So(result.Qualifications, ShouldHaveLength, 1)
+				So(result.Qualifications[0], ShouldResemble, &res)
 			})
 			Convey("Then the operation succeeded", func() {
 				So(err, ShouldBeNil)
@@ -1469,26 +1556,27 @@ func TestGetQualificationType(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call GetQualificationType", func() {
-			srvResponse = `
-				<GetQualificationTypeResult>
-					<QualificationType>
-						<QualificationTypeId>789RVWYBAZW00EXAMPLE</QualificationTypeId>
-						<CreationTime>2005-01-31T23:59:59Z</CreationTime>
-						<Name>EnglishWritingAbility</Name>
-						<Description>The ability to write and edit text...</Description>
-						<Keywords>English, text, write, edit, language</Keywords>
-						<QualificationTypeStatus>Active</QualificationTypeStatus>
-						<RetryDelayInSeconds>86400</RetryDelayInSeconds>
-						<IsRequestable>true</IsRequestable>
-					</QualificationType>
-				</GetQualificationTypeResult>`
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<GetQualificationTypeResponse>` +
+				`<OperationRequest>` +
+				`<RequestId>5d38ca17-77d6-4caa-b3f0-7cabc17c56ad</RequestId>` +
+				`</OperationRequest>
+				<QualificationType>
+					<QualificationTypeId>789RVWYBAZW00EXAMPLE</QualificationTypeId>
+					<CreationTime>2005-01-31T23:59:59Z</CreationTime>
+					<Name>EnglishWritingAbility</Name>
+					<Description>The ability to write and edit text...</Description>
+					<Keywords>English, text, write, edit, language</Keywords>
+					<QualificationTypeStatus>Active</QualificationTypeStatus>
+					<RetryDelayInSeconds>86400</RetryDelayInSeconds>
+					<IsRequestable>true</IsRequestable>
+				</QualificationType>
+				</GetQualificationTypeResponse>`
 			result, err := client.GetQualificationType(QUAL_ID)
 			Convey("Then the correct result was returned", func() {
 				var (
-					exp amtgen.TxsdGetQualificationTypeResponse
 					res amtgen.TQualificationType
 				)
-				exp.QualificationTypes = append(exp.QualificationTypes, &res)
 				res.QualificationTypeId = "789RVWYBAZW00EXAMPLE"
 				res.CreationTime = "2005-01-31T23:59:59Z"
 				res.Name = "EnglishWritingAbility"
@@ -1497,7 +1585,8 @@ func TestGetQualificationType(t *testing.T) {
 				res.QualificationTypeStatus = "Active"
 				res.RetryDelayInSeconds = 86400
 				res.IsRequestable = true
-				So(result, ShouldResemble, exp)
+				So(result.QualificationTypes, ShouldHaveLength, 1)
+				So(result.QualificationTypes[0], ShouldResemble, &res)
 			})
 			Convey("Then the operation succeeded", func() {
 				So(err, ShouldBeNil)
@@ -1522,7 +1611,11 @@ func TestGetRequesterStatistic(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call GetRequesterStatistic", func() {
-			srvResponse = `
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<GetStatisticResponse>` +
+				`<OperationRequest>` +
+				`<RequestId>5d38ca17-77d6-4caa-b3f0-7cabc17c56ad</RequestId>` +
+				`</OperationRequest>
 				<GetStatisticResult>
 					<Request>
 						<IsValid>True</IsValid>
@@ -1533,14 +1626,13 @@ func TestGetRequesterStatistic(t *testing.T) {
 						<Date>2011-09-05T07:00:00Z</Date>
 						<DoubleValue>281</DoubleValue>
 					</DataPoint>
-				</GetStatisticResult>`
+				</GetStatisticResult>
+				</GetStatisticResponse>`
 			result, err := client.GetRequesterStatistic("statistic", "timePeriod", 10)
 			Convey("Then the correct result was returned", func() {
 				var (
-					exp amtgen.TxsdGetRequesterStatisticResponse
 					res amtgen.TGetStatisticResult
 				)
-				exp.GetStatisticResults = append(exp.GetStatisticResults, &res)
 				res.Request = &amtgen.TxsdRequest{}
 				res.Request.IsValid = "True"
 				res.Statistic = "NumberAssignmentsApproved"
@@ -1548,7 +1640,8 @@ func TestGetRequesterStatistic(t *testing.T) {
 				res.DataPoints = append(res.DataPoints, &amtgen.TDataPoint{})
 				res.DataPoints[0].Date = "2011-09-05T07:00:00Z"
 				res.DataPoints[0].DoubleValue = 281
-				So(result, ShouldResemble, exp)
+				So(result.GetStatisticResults, ShouldHaveLength, 1)
+				So(result.GetStatisticResults[0], ShouldResemble, &res)
 			})
 			Convey("Then the operation succeeded", func() {
 				So(err, ShouldBeNil)
@@ -1575,7 +1668,11 @@ func TestGetRequesterWorkerStatistic(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call GetRequesterWorkerStatistic", func() {
-			srvResponse = `
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<GetStatisticResponse>` +
+				`<OperationRequest>` +
+				`<RequestId>5d38ca17-77d6-4caa-b3f0-7cabc17c56ad</RequestId>` +
+				`</OperationRequest>
 				<GetStatisticResult>
 					<Request>
 						<IsValid>True</IsValid>
@@ -1587,14 +1684,13 @@ func TestGetRequesterWorkerStatistic(t *testing.T) {
 						<Date>2011-09-05T07:00:00Z</Date>
 						<DoubleValue>281</DoubleValue>
 					</DataPoint>
-				</GetStatisticResult>`
+				</GetStatisticResult>
+				</GetStatisticResponse>`
 			result, err := client.GetRequesterWorkerStatistic("statistic", WORKER_ID, "timePeriod", 10)
 			Convey("Then the correct result was returned", func() {
 				var (
-					exp amtgen.TxsdGetRequesterWorkerStatisticResponse
 					res amtgen.TGetStatisticResult
 				)
-				exp.GetStatisticResults = append(exp.GetStatisticResults, &res)
 				res.Request = &amtgen.TxsdRequest{}
 				res.Request.IsValid = "True"
 				res.WorkerId = "A1Z4X5D207ALZF"
@@ -1603,7 +1699,8 @@ func TestGetRequesterWorkerStatistic(t *testing.T) {
 				res.DataPoints = append(res.DataPoints, &amtgen.TDataPoint{})
 				res.DataPoints[0].Date = "2011-09-05T07:00:00Z"
 				res.DataPoints[0].DoubleValue = 281
-				So(result, ShouldResemble, exp)
+				So(result.GetStatisticResults, ShouldHaveLength, 1)
+				So(result.GetStatisticResults[0], ShouldResemble, &res)
 			})
 			Convey("Then the operation succeeded", func() {
 				So(err, ShouldBeNil)
@@ -1631,7 +1728,11 @@ func TestGetReviewableHITs(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call GetReviewableHITs", func() {
-			srvResponse = `
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<GetReviewableHITsResponse>` +
+				`<OperationRequest>` +
+				`<RequestId>5d38ca17-77d6-4caa-b3f0-7cabc17c56ad</RequestId>` +
+				`</OperationRequest>
 				<GetReviewableHITsResult>
 					<Request>
 						<IsValid>True</IsValid>
@@ -1642,14 +1743,13 @@ func TestGetReviewableHITs(t *testing.T) {
 					<HIT>
 						<HITId>GBHZVQX3EHXZ2AYDY2T0</HITId>
 					</HIT>
-				</GetReviewableHITsResult>`
+				</GetReviewableHITsResult>
+				</GetReviewableHITsResponse>`
 			result, err := client.GetReviewableHITs(HIT_TYPE_ID, "status", "sortProperty", true, 10, 20)
 			Convey("Then the correct result was returned", func() {
 				var (
-					exp amtgen.TxsdGetReviewableHITsResponse
 					res amtgen.TGetReviewableHITsResult
 				)
-				exp.GetReviewableHITsResults = append(exp.GetReviewableHITsResults, &res)
 				res.Request = &amtgen.TxsdRequest{}
 				res.Request.IsValid = "True"
 				res.NumResults = 1
@@ -1657,7 +1757,8 @@ func TestGetReviewableHITs(t *testing.T) {
 				res.PageNumber = 1
 				res.Hits = append(res.Hits, &amtgen.Thit{})
 				res.Hits[0].HITId = "GBHZVQX3EHXZ2AYDY2T0"
-				So(result, ShouldResemble, exp)
+				So(result.GetReviewableHITsResults, ShouldHaveLength, 1)
+				So(result.GetReviewableHITsResults[0], ShouldResemble, &res)
 			})
 			Convey("Then the operation succeeded", func() {
 				So(err, ShouldBeNil)
@@ -1687,7 +1788,11 @@ func TestGetReviewResultsForHIT(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call GetReviewResultsForHIT", func() {
-			srvResponse = `
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<GetReviewResultsForHITResponse>` +
+				`<OperationRequest>` +
+				`<RequestId>5d38ca17-77d6-4caa-b3f0-7cabc17c56ad</RequestId>` +
+				`</OperationRequest>
 				<GetReviewResultsForHITResult>
 					<HITId>1AAAAAAAAABBBBBBBBBBCCCCCCCCCC</HITId>
 					<AssignmentReviewPolicy>
@@ -1797,14 +1902,13 @@ func TestGetReviewResultsForHIT(t *testing.T) {
 							<ErrorCode>AWS.MechanicalTurk.InvalidAssignmentState</ErrorCode>
 						</ReviewAction>
 					</HITReviewReport>
-				</GetReviewResultsForHITResult>`
+				</GetReviewResultsForHITResult>
+				</GetReviewResultsForHITResponse>`
 			result, err := client.GetReviewResultsForHIT(HIT_ID, []string{"lvl1", "lvl2"}, true, false, 10, 20)
 			Convey("Then the correct result was returned", func() {
 				var (
-					exp amtgen.TxsdGetReviewResultsForHITResponse
 					res amtgen.TGetReviewResultsForHITResult
 				)
-				exp.GetReviewResultsForHITResults = append(exp.GetReviewResultsForHITResults, &res)
 				res.HITId = "1AAAAAAAAABBBBBBBBBBCCCCCCCCCC"
 				res.AssignmentReviewPolicy = &amtgen.TReviewPolicy{}
 				res.AssignmentReviewPolicy.PolicyName = "ScoreMyKnownAnswers/2011-09-01"
@@ -1905,7 +2009,8 @@ func TestGetReviewResultsForHIT(t *testing.T) {
 				res.HITReviewReport.ReviewActions[1].Result = "Assignment was in an invalid state for this operation."
 				res.HITReviewReport.ReviewActions[1].ErrorCode = "AWS.MechanicalTurk.InvalidAssignmentState"
 
-				So(result, ShouldResemble, exp)
+				So(result.GetReviewResultsForHITResults, ShouldHaveLength, 1)
+				So(result.GetReviewResultsForHITResults[0], ShouldResemble, &res)
 			})
 			Convey("Then the operation succeeded", func() {
 				So(err, ShouldBeNil)
@@ -1934,22 +2039,26 @@ func TestGrantBonus(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call GrantBonus", func() {
-			srvResponse = `
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<GrantBonusResponse>` +
+				`<OperationRequest>` +
+				`<RequestId>5d38ca17-77d6-4caa-b3f0-7cabc17c56ad</RequestId>` +
+				`</OperationRequest>
 				<GrantBonusResult>
 					<Request>
 						<IsValid>True</IsValid>
 					</Request>
-				</GrantBonusResult>`
+				</GrantBonusResult>
+				</GrantBonusResponse>`
 			result, err := client.GrantBonus(WORKER_ID, ASSIGNMENT_ID, 1.5, FEEDBACK, "uniqueRequestToken")
 			Convey("Then the correct result was returned", func() {
 				var (
-					exp amtgen.TxsdGrantBonusResponse
 					res amtgen.TGrantBonusResult
 				)
-				exp.GrantBonusResults = append(exp.GrantBonusResults, &res)
 				res.Request = &amtgen.TxsdRequest{}
 				res.Request.IsValid = "True"
-				So(result, ShouldResemble, exp)
+				So(result.GrantBonusResults, ShouldHaveLength, 1)
+				So(result.GrantBonusResults[0], ShouldResemble, &res)
 			})
 			Convey("Then the operation succeeded", func() {
 				So(err, ShouldBeNil)
@@ -1979,22 +2088,26 @@ func TestGrantQualification(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call GrantQualification", func() {
-			srvResponse = `
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<GrantQualificationResponse>` +
+				`<OperationRequest>` +
+				`<RequestId>5d38ca17-77d6-4caa-b3f0-7cabc17c56ad</RequestId>` +
+				`</OperationRequest>
 				<GrantQualificationResult>
 					<Request>
 						<IsValid>True</IsValid>
 					</Request>
-				</GrantQualificationResult>`
+				</GrantQualificationResult>
+				</GrantQualificationResponse>`
 			result, err := client.GrantQualification(QUAL_ID, QUAL_VALUE)
 			Convey("Then the correct result was returned", func() {
 				var (
-					exp amtgen.TxsdGrantQualificationResponse
 					res amtgen.TGrantQualificationResult
 				)
-				exp.GrantQualificationResults = append(exp.GrantQualificationResults, &res)
 				res.Request = &amtgen.TxsdRequest{}
 				res.Request.IsValid = "True"
-				So(result, ShouldResemble, exp)
+				So(result.GrantQualificationResults, ShouldHaveLength, 1)
+				So(result.GrantQualificationResults[0], ShouldResemble, &res)
 			})
 			Convey("Then the operation succeeded", func() {
 				So(err, ShouldBeNil)
@@ -2020,22 +2133,26 @@ func TestNotifyWorkers(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call NotifyWorkers", func() {
-			srvResponse = `
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<NotifyWorkersResponse>` +
+				`<OperationRequest>` +
+				`<RequestId>5d38ca17-77d6-4caa-b3f0-7cabc17c56ad</RequestId>` +
+				`</OperationRequest>
 				<NotifyWorkersResult>
 					<Request>
 						<IsValid>True</IsValid>
 					</Request>
-				</NotifyWorkersResult>`
+				</NotifyWorkersResult>
+				</NotifyWorkersResponse>`
 			result, err := client.NotifyWorkers("subject", "messageText", []string{WORKER_ID})
 			Convey("Then the correct result was returned", func() {
 				var (
-					exp amtgen.TxsdNotifyWorkersResponse
 					res amtgen.TNotifyWorkersResult
 				)
-				exp.NotifyWorkersResults = append(exp.NotifyWorkersResults, &res)
 				res.Request = &amtgen.TxsdRequest{}
 				res.Request.IsValid = "True"
-				So(result, ShouldResemble, exp)
+				So(result.NotifyWorkersResults, ShouldHaveLength, 1)
+				So(result.NotifyWorkersResults[0], ShouldResemble, &res)
 			})
 			Convey("Then the operation succeeded", func() {
 				So(err, ShouldBeNil)
@@ -2062,25 +2179,29 @@ func TestRegisterHITType(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call RegisterHITType", func() {
-			srvResponse = `
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<RegisterHITTypeResponse>` +
+				`<OperationRequest>` +
+				`<RequestId>5d38ca17-77d6-4caa-b3f0-7cabc17c56ad</RequestId>` +
+				`</OperationRequest>
 				<RegisterHITTypeResult>
 					<Request>
 						<IsValid>True</IsValid>
 					</Request>
 					<HITTypeId>KZ3GKTRXBWGYX8WXBW60</HITTypeId>
-				</RegisterHITTypeResult>`
+				</RegisterHITTypeResult>
+				</RegisterHITTypeResponse>`
 			result, err := client.RegisterHITType("title", "description",
 				1.5, 10, 20, []string{"key1", "key2", "key3"}, nil)
 			Convey("Then the correct result was returned", func() {
 				var (
-					exp amtgen.TxsdRegisterHITTypeResponse
 					res amtgen.TRegisterHITTypeResult
 				)
-				exp.RegisterHITTypeResults = append(exp.RegisterHITTypeResults, &res)
 				res.Request = &amtgen.TxsdRequest{}
 				res.Request.IsValid = "True"
 				res.HITTypeId = "KZ3GKTRXBWGYX8WXBW60"
-				So(result, ShouldResemble, exp)
+				So(result.RegisterHITTypeResults, ShouldHaveLength, 1)
+				So(result.RegisterHITTypeResults[0], ShouldResemble, &res)
 			})
 			Convey("Then the operation succeeded", func() {
 				So(err, ShouldBeNil)
@@ -2111,22 +2232,26 @@ func TestRejectAssignment(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call RejectAssignment", func() {
-			srvResponse = `
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<RejectAssignmentResponse>` +
+				`<OperationRequest>` +
+				`<RequestId>5d38ca17-77d6-4caa-b3f0-7cabc17c56ad</RequestId>` +
+				`</OperationRequest>
 				<RejectAssignmentResult>
 					<Request>
 						<IsValid>True</IsValid>
 					</Request>
-				</RejectAssignmentResult>`
+				</RejectAssignmentResult>
+				</RejectAssignmentResponse>`
 			result, err := client.RejectAssignment(ASSIGNMENT_ID, FEEDBACK)
 			Convey("Then the correct result was returned", func() {
 				var (
-					exp amtgen.TxsdRejectAssignmentResponse
 					res amtgen.TRejectAssignmentResult
 				)
-				exp.RejectAssignmentResults = append(exp.RejectAssignmentResults, &res)
 				res.Request = &amtgen.TxsdRequest{}
 				res.Request.IsValid = "True"
-				So(result, ShouldResemble, exp)
+				So(result.RejectAssignmentResults, ShouldHaveLength, 1)
+				So(result.RejectAssignmentResults[0], ShouldResemble, &res)
 			})
 			Convey("Then the operation succeeded", func() {
 				So(err, ShouldBeNil)
@@ -2152,22 +2277,26 @@ func TestRejectQualificationRequest(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call RejectQualificationRequest", func() {
-			srvResponse = `
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<RejectQualificationRequestResponse>` +
+				`<OperationRequest>` +
+				`<RequestId>5d38ca17-77d6-4caa-b3f0-7cabc17c56ad</RequestId>` +
+				`</OperationRequest>
 				<RejectQualificationRequestResult>
 					<Request>
 						<IsValid>True</IsValid>
 					</Request>
-				</RejectQualificationRequestResult>`
+				</RejectQualificationRequestResult>
+				</RejectQualificationRequestResponse>`
 			result, err := client.RejectQualificationRequest(QUAL_ID, FEEDBACK)
 			Convey("Then the correct result was returned", func() {
 				var (
-					exp amtgen.TxsdRejectQualificationRequestResponse
 					res amtgen.TRejectQualificationRequestResult
 				)
-				exp.RejectQualificationRequestResults = append(exp.RejectQualificationRequestResults, &res)
 				res.Request = &amtgen.TxsdRequest{}
 				res.Request.IsValid = "True"
-				So(result, ShouldResemble, exp)
+				So(result.RejectQualificationRequestResults, ShouldHaveLength, 1)
+				So(result.RejectQualificationRequestResults[0], ShouldResemble, &res)
 			})
 			Convey("Then the operation succeeded", func() {
 				So(err, ShouldBeNil)
@@ -2193,22 +2322,26 @@ func TestRevokeQualification(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call RevokeQualification", func() {
-			srvResponse = `
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<RevokeQualificationResponse>` +
+				`<OperationRequest>` +
+				`<RequestId>5d38ca17-77d6-4caa-b3f0-7cabc17c56ad</RequestId>` +
+				`</OperationRequest>
 				<RevokeQualificationResult>
 					<Request>
 						<IsValid>True</IsValid>
 					</Request>
-				</RevokeQualificationResult>`
+				</RevokeQualificationResult>
+				</RevokeQualificationResponse>`
 			result, err := client.RevokeQualification(WORKER_ID, QUAL_ID, FEEDBACK)
 			Convey("Then the correct result was returned", func() {
 				var (
-					exp amtgen.TxsdRevokeQualificationResponse
 					res amtgen.TRevokeQualificationResult
 				)
-				exp.RevokeQualificationResults = append(exp.RevokeQualificationResults, &res)
 				res.Request = &amtgen.TxsdRequest{}
 				res.Request.IsValid = "True"
-				So(result, ShouldResemble, exp)
+				So(result.RevokeQualificationResults, ShouldHaveLength, 1)
+				So(result.RevokeQualificationResults[0], ShouldResemble, &res)
 			})
 			Convey("Then the operation succeeded", func() {
 				So(err, ShouldBeNil)
@@ -2235,7 +2368,11 @@ func TestSearchHITs(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call SearchHITs", func() {
-			srvResponse = `
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<SearchHITsResponse>` +
+				`<OperationRequest>` +
+				`<RequestId>5d38ca17-77d6-4caa-b3f0-7cabc17c56ad</RequestId>` +
+				`</OperationRequest>
 				<SearchHITsResult>
 					<Request>
 						<IsValid>True</IsValid>
@@ -2285,14 +2422,13 @@ func TestSearchHITs(t *testing.T) {
 						<NumberOfAssignmentsAvailable>1</NumberOfAssignmentsAvailable>
 						<NumberOfAssignmentsCompleted>0</NumberOfAssignmentsCompleted>
 					</HIT>
-				</SearchHITsResult>`
+				</SearchHITsResult>
+				</SearchHITsResponse>`
 			result, err := client.SearchHITs("sortProperty", true, 10, 20)
 			Convey("Then the correct result was returned", func() {
 				var (
-					exp amtgen.TxsdSearchHITsResponse
 					res amtgen.TSearchHITsResult
 				)
-				exp.SearchHITsResults = append(exp.SearchHITsResults, &res)
 				res.Request = &amtgen.TxsdRequest{}
 				res.Request.IsValid = "True"
 				res.NumResults = 2
@@ -2336,7 +2472,8 @@ func TestSearchHITs(t *testing.T) {
 				res.Hits[1].NumberOfAssignmentsAvailable = 1
 				res.Hits[1].NumberOfAssignmentsCompleted = 0
 
-				So(result, ShouldResemble, exp)
+				So(result.SearchHITsResults, ShouldHaveLength, 1)
+				So(result.SearchHITsResults[0], ShouldResemble, &res)
 			})
 			Convey("Then the operation succeeded", func() {
 				So(err, ShouldBeNil)
@@ -2364,7 +2501,11 @@ func TestSearchQualificationTypes(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call SearchQualificationTypes", func() {
-			srvResponse = `
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<SearchQualificationTypesResponse>` +
+				`<OperationRequest>` +
+				`<RequestId>5d38ca17-77d6-4caa-b3f0-7cabc17c56ad</RequestId>` +
+				`</OperationRequest>
 				<SearchQualificationTypesResult>
 					<Request>
 						<IsValid>True</IsValid>
@@ -2387,14 +2528,13 @@ func TestSearchQualificationTypes(t *testing.T) {
 						</Test>
 						<TestDurationInSeconds>1200</TestDurationInSeconds>
 					</QualificationType>
-				</SearchQualificationTypesResult>`
+				</SearchQualificationTypesResult>
+				</SearchQualificationTypesResponse>`
 			result, err := client.SearchQualificationTypes("query", "sortProperty", true, 10, 20, false, true)
 			Convey("Then the correct result was returned", func() {
 				var (
-					exp amtgen.TxsdSearchQualificationTypesResponse
 					res amtgen.TSearchQualificationTypesResult
 				)
-				exp.SearchQualificationTypesResults = append(exp.SearchQualificationTypesResults, &res)
 				res.Request = &amtgen.TxsdRequest{}
 				res.Request.IsValid = "True"
 				res.NumResults = 10
@@ -2412,8 +2552,10 @@ func TestSearchQualificationTypes(t *testing.T) {
 								[XML-formatted question data]
 							</QuestionForm>
 						`
+				So(result.SearchQualificationTypesResults, ShouldHaveLength, 1)
+				So(result.SearchQualificationTypesResults[0].QualificationTypes, ShouldHaveLength, 1)
 				So(result.SearchQualificationTypesResults[0].QualificationTypes[0], ShouldResemble, res.QualificationTypes[0])
-				So(result, ShouldResemble, exp)
+				So(result.SearchQualificationTypesResults[0], ShouldResemble, &res)
 			})
 			Convey("Then the operation succeeded", func() {
 				So(err, ShouldBeNil)
@@ -2443,22 +2585,26 @@ func TestSendTestEventNotification(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call SendTestEventNotification", func() {
-			srvResponse = `
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<SendTestEventNotificationResponse>` +
+				`<OperationRequest>` +
+				`<RequestId>5d38ca17-77d6-4caa-b3f0-7cabc17c56ad</RequestId>` +
+				`</OperationRequest>
 				<SendTestEventNotificationResult>
 					<Request>
 						<IsValid>True</IsValid>
 					</Request>
-				</SendTestEventNotificationResult>`
+				</SendTestEventNotificationResult>
+				</SendTestEventNotificationResponse>`
 			result, err := client.SendTestEventNotification(nil, "testEventType")
 			Convey("Then the correct result was returned", func() {
 				var (
-					exp amtgen.TxsdSendTestEventNotificationResponse
 					res amtgen.TSendTestEventNotificationResult
 				)
-				exp.SendTestEventNotificationResults = append(exp.SendTestEventNotificationResults, &res)
 				res.Request = &amtgen.TxsdRequest{}
 				res.Request.IsValid = "True"
-				So(result, ShouldResemble, exp)
+				So(result.SendTestEventNotificationResults, ShouldHaveLength, 1)
+				So(result.SendTestEventNotificationResults[0], ShouldResemble, &res)
 			})
 			Convey("Then the operation succeeded", func() {
 				So(err, ShouldBeNil)
@@ -2483,22 +2629,26 @@ func TestSetHITAsReviewing(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call SetHITAsReviewing", func() {
-			srvResponse = `
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<SetHITAsReviewingResponse>` +
+				`<OperationRequest>` +
+				`<RequestId>5d38ca17-77d6-4caa-b3f0-7cabc17c56ad</RequestId>` +
+				`</OperationRequest>
 				<SetHITAsReviewingResult>
 					<Request>
 						<IsValid>True</IsValid>
 					</Request>
-				</SetHITAsReviewingResult>`
+				</SetHITAsReviewingResult>
+				</SetHITAsReviewingResponse>`
 			result, err := client.SetHITAsReviewing(HIT_ID, true)
 			Convey("Then the correct result was returned", func() {
 				var (
-					exp amtgen.TxsdSetHITAsReviewingResponse
 					res amtgen.TSetHITAsReviewingResult
 				)
-				exp.SetHITAsReviewingResults = append(exp.SetHITAsReviewingResults, &res)
 				res.Request = &amtgen.TxsdRequest{}
 				res.Request.IsValid = "True"
-				So(result, ShouldResemble, exp)
+				So(result.SetHITAsReviewingResults, ShouldHaveLength, 1)
+				So(result.SetHITAsReviewingResults[0], ShouldResemble, &res)
 			})
 			Convey("Then the operation succeeded", func() {
 				So(err, ShouldBeNil)
@@ -2524,22 +2674,26 @@ func TestSetHITTypeNotification(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call SetHITTypeNotification", func() {
-			srvResponse = `
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<SetHITTypeNotificationResponse>` +
+				`<OperationRequest>` +
+				`<RequestId>5d38ca17-77d6-4caa-b3f0-7cabc17c56ad</RequestId>` +
+				`</OperationRequest>
 				<SetHITTypeNotificationResult>
 					<Request>
 						<IsValid>True</IsValid>
 					</Request>
-				</SetHITTypeNotificationResult>`
+				</SetHITTypeNotificationResult>
+				</SetHITTypeNotificationResponse>`
 			result, err := client.SetHITTypeNotification(HIT_TYPE_ID, nil, true)
 			Convey("Then the correct result was returned", func() {
 				var (
-					exp amtgen.TxsdSetHITTypeNotificationResponse
 					res amtgen.TSetHITTypeNotificationResult
 				)
-				exp.SetHITTypeNotificationResults = append(exp.SetHITTypeNotificationResults, &res)
 				res.Request = &amtgen.TxsdRequest{}
 				res.Request.IsValid = "True"
-				So(result, ShouldResemble, exp)
+				So(result.SetHITTypeNotificationResults, ShouldHaveLength, 1)
+				So(result.SetHITTypeNotificationResults[0], ShouldResemble, &res)
 			})
 			Convey("Then the operation succeeded", func() {
 				So(err, ShouldBeNil)
@@ -2565,22 +2719,26 @@ func TestUnblockWorker(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call UnblockWorker", func() {
-			srvResponse = `
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<UnblockWorkerResponse>` +
+				`<OperationRequest>` +
+				`<RequestId>5d38ca17-77d6-4caa-b3f0-7cabc17c56ad</RequestId>` +
+				`</OperationRequest>
 				<UnblockWorkerResult>
 					<Request>
 						<IsValid>True</IsValid>
 					</Request>
-				</UnblockWorkerResult>`
+				</UnblockWorkerResult>
+				</UnblockWorkerResponse>`
 			result, err := client.UnblockWorker(WORKER_ID, FEEDBACK)
 			Convey("Then the correct result was returned", func() {
 				var (
-					exp amtgen.TxsdUnblockWorkerResponse
 					res amtgen.TUnblockWorkerResult
 				)
-				exp.UnblockWorkerResults = append(exp.UnblockWorkerResults, &res)
 				res.Request = &amtgen.TxsdRequest{}
 				res.Request.IsValid = "True"
-				So(result, ShouldResemble, exp)
+				So(result.UnblockWorkerResults, ShouldHaveLength, 1)
+				So(result.UnblockWorkerResults[0], ShouldResemble, &res)
 			})
 			Convey("Then the operation succeeded", func() {
 				So(err, ShouldBeNil)
@@ -2606,22 +2764,26 @@ func TestUpdateQualificationScore(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call UpdateQualificationScore", func() {
-			srvResponse = `
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<UpdateQualificationScoreResponse>` +
+				`<OperationRequest>` +
+				`<RequestId>5d38ca17-77d6-4caa-b3f0-7cabc17c56ad</RequestId>` +
+				`</OperationRequest>
 				<UpdateQualificationScoreResult>
 					<Request>
 						<IsValid>True</IsValid>
 					</Request>
-				</UpdateQualificationScoreResult>`
+				</UpdateQualificationScoreResult>
+				</UpdateQualificationScoreResponse>`
 			result, err := client.UpdateQualificationScore(QUAL_ID, WORKER_ID, QUAL_VALUE)
 			Convey("Then the correct result was returned", func() {
 				var (
-					exp amtgen.TxsdUpdateQualificationScoreResponse
 					res amtgen.TUpdateQualificationScoreResult
 				)
-				exp.UpdateQualificationScoreResults = append(exp.UpdateQualificationScoreResults, &res)
 				res.Request = &amtgen.TxsdRequest{}
 				res.Request.IsValid = "True"
-				So(result, ShouldResemble, exp)
+				So(result.UpdateQualificationScoreResults, ShouldHaveLength, 1)
+				So(result.UpdateQualificationScoreResults[0], ShouldResemble, &res)
 			})
 			Convey("Then the operation succeeded", func() {
 				So(err, ShouldBeNil)
@@ -2648,31 +2810,29 @@ func TestUpdateQualificationType(t *testing.T) {
 	defer closeSrv()
 	Convey("Given an initialized client", t, func() {
 		Convey("When I call UpdateQualificationType", func() {
-			srvResponse = `
-				<UpdateQualificationTypeResult>
-					<Request>
-						<IsValid>True</IsValid>
-					</Request>
-					<QualificationType>
-						<QualificationTypeId>789RVWYBAZW00EXAMPLE</QualificationTypeId>
-						<CreationTime>2009-06-15T12:00:01Z</CreationTime>
-						<Name>EnglishWritingAbility</Name>
-						<Description>The ability to write and edit text...</Description>
-						<Keywords>English, text, write, edit, language</Keywords>
-						<QualificationTypeStatus>Active</QualificationTypeStatus>
-						<RetryDelayInSeconds>86400</RetryDelayInSeconds>
-						<IsRequestable>true</IsRequestable>
-					</QualificationType>
-				</UpdateQualificationTypeResult>`
+			srvResponse = `<?xml version="1.0"?>` + "\n" +
+				`<UpdateQualificationTypeResponse>` +
+				`<OperationRequest>` +
+				`<RequestId>5d38ca17-77d6-4caa-b3f0-7cabc17c56ad</RequestId>` +
+				`</OperationRequest>
+				<QualificationType>
+					<QualificationTypeId>789RVWYBAZW00EXAMPLE</QualificationTypeId>
+					<CreationTime>2009-06-15T12:00:01Z</CreationTime>
+					<Name>EnglishWritingAbility</Name>
+					<Description>The ability to write and edit text...</Description>
+					<Keywords>English, text, write, edit, language</Keywords>
+					<QualificationTypeStatus>Active</QualificationTypeStatus>
+					<RetryDelayInSeconds>86400</RetryDelayInSeconds>
+					<IsRequestable>true</IsRequestable>
+				</QualificationType>
+				</UpdateQualificationTypeResponse>`
 			result, err := client.UpdateQualificationType(QUAL_ID, 10,
 				"qualificationTypeStatus", "description", "test",
 				"answerKey", 20, true, 30)
 			Convey("Then the correct result was returned", func() {
 				var (
-					exp amtgen.TxsdUpdateQualificationTypeResponse
 					res amtgen.TQualificationType
 				)
-				exp.QualificationTypes = append(exp.QualificationTypes, &res)
 				// res.Request = &amtgen.TxsdRequest{}
 				// res.Request.IsValid = "True"
 				res.QualificationTypeId = "789RVWYBAZW00EXAMPLE"
@@ -2683,8 +2843,8 @@ func TestUpdateQualificationType(t *testing.T) {
 				res.QualificationTypeStatus = "Active"
 				res.RetryDelayInSeconds = 86400
 				res.IsRequestable = true
+				So(result.QualificationTypes, ShouldHaveLength, 1)
 				So(result.QualificationTypes[0], ShouldResemble, &res)
-				So(result, ShouldResemble, exp)
 			})
 			Convey("Then the operation succeeded", func() {
 				So(err, ShouldBeNil)

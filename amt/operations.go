@@ -1,7 +1,6 @@
 package amt
 
 import (
-	"encoding/xml"
 	"fmt"
 	amtgen "github.com/jesand/crowds/amt/gen/mechanicalturk.amazonaws.com/AWSMechanicalTurk/2014-08-15/AWSMechanicalTurkRequester.xsd_go"
 	xsdt "github.com/metaleap/go-xsd/types"
@@ -17,10 +16,7 @@ func (client AmtClient) ApproveAssignment(assignmentId,
 	var (
 		request  amtgen.TxsdApproveAssignment
 		args     amtgen.TApproveAssignmentRequest
-		response struct {
-			XMLName xml.Name `xml:"response"`
-			amtgen.TxsdApproveAssignmentResponse
-		}
+		response amtgen.TxsdApproveAssignmentResponse
 	)
 	args.AssignmentId = xsdt.String(assignmentId)
 	args.RequesterFeedback = xsdt.String(requesterFeedback)
@@ -31,7 +27,7 @@ func (client AmtClient) ApproveAssignment(assignmentId,
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.TxsdApproveAssignmentResponse, err
+	return response, err
 }
 
 // ApproveRejectedAssignment approves an assignment that was previously
@@ -43,10 +39,7 @@ func (client AmtClient) ApproveRejectedAssignment(assignmentId,
 	var (
 		request  amtgen.TxsdApproveRejectedAssignment
 		args     amtgen.TApproveRejectedAssignmentRequest
-		response struct {
-			XMLName xml.Name `xml:"response"`
-			amtgen.TxsdApproveRejectedAssignmentResponse
-		}
+		response amtgen.TxsdApproveRejectedAssignmentResponse
 	)
 	args.AssignmentId = xsdt.String(assignmentId)
 	args.RequesterFeedback = xsdt.String(requesterFeedback)
@@ -57,7 +50,7 @@ func (client AmtClient) ApproveRejectedAssignment(assignmentId,
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.TxsdApproveRejectedAssignmentResponse, err
+	return response, err
 }
 
 // AssignQualification gives a Worker a Qualification.
@@ -69,10 +62,7 @@ func (client AmtClient) AssignQualification(qualificationTypeId,
 	var (
 		request  amtgen.TxsdAssignQualification
 		args     amtgen.TAssignQualificationRequest
-		response struct {
-			XMLName xml.Name `xml:"response"`
-			amtgen.TxsdAssignQualificationResponse
-		}
+		response amtgen.TxsdAssignQualificationResponse
 	)
 	args.QualificationTypeId = xsdt.String(qualificationTypeId)
 	args.WorkerId = xsdt.String(workerId)
@@ -85,7 +75,7 @@ func (client AmtClient) AssignQualification(qualificationTypeId,
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.TxsdAssignQualificationResponse, err
+	return response, err
 }
 
 // BlockWorker allows you to prevent a Worker from working on your HITs.
@@ -96,10 +86,7 @@ func (client AmtClient) BlockWorker(workerId, reason string) (
 	var (
 		request  amtgen.TxsdBlockWorker
 		args     amtgen.TBlockWorkerRequest
-		response struct {
-			XMLName xml.Name `xml:"response"`
-			amtgen.TxsdBlockWorkerResponse
-		}
+		response amtgen.TxsdBlockWorkerResponse
 	)
 	args.WorkerId = xsdt.String(workerId)
 	args.Reason = xsdt.String(reason)
@@ -110,7 +97,7 @@ func (client AmtClient) BlockWorker(workerId, reason string) (
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.TxsdBlockWorkerResponse, err
+	return response, err
 }
 
 // ChangeHITTypeOfHIT allows you to change the HITType properties of a HIT.
@@ -121,10 +108,7 @@ func (client AmtClient) ChangeHITTypeOfHIT(hitId, hitTypeId string) (
 	var (
 		request  amtgen.TxsdChangeHITTypeOfHIT
 		args     amtgen.TChangeHITTypeOfHITRequest
-		response struct {
-			XMLName xml.Name `xml:"response"`
-			amtgen.TxsdChangeHITTypeOfHITResponse
-		}
+		response amtgen.TxsdChangeHITTypeOfHITResponse
 	)
 	args.HITId = xsdt.String(hitId)
 	args.HITTypeId = xsdt.String(hitTypeId)
@@ -135,7 +119,7 @@ func (client AmtClient) ChangeHITTypeOfHIT(hitId, hitTypeId string) (
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.TxsdChangeHITTypeOfHITResponse, err
+	return response, err
 }
 
 // CreateHIT creates a new Human Intelligence Task (HIT) without a HITTypeId.
@@ -153,10 +137,7 @@ func (client AmtClient) CreateHIT(title, description, question string,
 	var (
 		request  amtgen.TxsdCreateHIT
 		args     amtgen.TCreateHITRequest
-		response struct {
-			XMLName           xml.Name `xml:"response"`
-			CreateHITResponse amtgen.TxsdCreateHITResponse
-		}
+		response amtgen.TxsdCreateHITResponse
 	)
 	args.Title = xsdt.String(title)
 	args.Description = xsdt.String(description)
@@ -194,7 +175,7 @@ func (client AmtClient) CreateHIT(title, description, question string,
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.CreateHITResponse, err
+	return response, err
 }
 
 // CreateHITFromHITTypeId creates a new Human Intelligence Task (HIT) from a
@@ -210,10 +191,7 @@ func (client AmtClient) CreateHITFromHITTypeId(hitTypeId, question string,
 	var (
 		request  amtgen.TxsdCreateHIT
 		args     amtgen.TCreateHITRequest
-		response struct {
-			XMLName           xml.Name `xml:"response"`
-			CreateHITResponse amtgen.TxsdCreateHITResponse
-		}
+		response amtgen.TxsdCreateHITResponse
 	)
 	args.HITTypeId = xsdt.String(hitTypeId)
 	args.Question = xsdt.String(question)
@@ -243,7 +221,7 @@ func (client AmtClient) CreateHITFromHITTypeId(hitTypeId, question string,
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.CreateHITResponse, err
+	return response, err
 }
 
 // CreateQualificationType creates a new Qualification type.
@@ -257,10 +235,7 @@ func (client AmtClient) CreateQualificationType(name, description string,
 	var (
 		request  amtgen.TxsdCreateQualificationType
 		args     amtgen.TCreateQualificationTypeRequest
-		response struct {
-			XMLName                         xml.Name `xml:"response"`
-			CreateQualificationTypeResponse amtgen.TxsdCreateQualificationTypeResponse
-		}
+		response amtgen.TxsdCreateQualificationTypeResponse
 	)
 	args.Name = xsdt.String(name)
 	args.Description = xsdt.String(description)
@@ -280,7 +255,7 @@ func (client AmtClient) CreateQualificationType(name, description string,
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.CreateQualificationTypeResponse, err
+	return response, err
 }
 
 // DisableHIT removes a HIT from the Amazon Mechanical Turk marketplace.
@@ -291,10 +266,7 @@ func (client AmtClient) DisableHIT(hitId string) (
 	var (
 		request  amtgen.TxsdDisableHIT
 		args     amtgen.TDisableHITRequest
-		response struct {
-			XMLName xml.Name `xml:"response"`
-			amtgen.TxsdDisableHITResponse
-		}
+		response amtgen.TxsdDisableHITResponse
 	)
 	args.HITId = xsdt.String(hitId)
 	request.Requests = append(request.Requests, &args)
@@ -304,7 +276,7 @@ func (client AmtClient) DisableHIT(hitId string) (
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.TxsdDisableHITResponse, err
+	return response, err
 }
 
 // DisposeHIT disposes of a HIT that is no longer needed.
@@ -315,10 +287,7 @@ func (client AmtClient) DisposeHIT(hitId string) (
 	var (
 		request  amtgen.TxsdDisposeHIT
 		args     amtgen.TDisposeHITRequest
-		response struct {
-			XMLName xml.Name `xml:"response"`
-			amtgen.TxsdDisposeHITResponse
-		}
+		response amtgen.TxsdDisposeHITResponse
 	)
 	args.HITId = xsdt.String(hitId)
 	request.Requests = append(request.Requests, &args)
@@ -328,7 +297,7 @@ func (client AmtClient) DisposeHIT(hitId string) (
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.TxsdDisposeHITResponse, err
+	return response, err
 }
 
 // DisposeQualificationType disposes of a HIT that is no longer needed.
@@ -339,10 +308,7 @@ func (client AmtClient) DisposeQualificationType(qualificationTypeId string) (
 	var (
 		request  amtgen.TxsdDisposeQualificationType
 		args     amtgen.TDisposeQualificationTypeRequest
-		response struct {
-			XMLName xml.Name `xml:"response"`
-			amtgen.TxsdDisposeQualificationTypeResponse
-		}
+		response amtgen.TxsdDisposeQualificationTypeResponse
 	)
 	args.QualificationTypeId = xsdt.String(qualificationTypeId)
 	request.Requests = append(request.Requests, &args)
@@ -352,7 +318,7 @@ func (client AmtClient) DisposeQualificationType(qualificationTypeId string) (
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.TxsdDisposeQualificationTypeResponse, err
+	return response, err
 }
 
 // ExtendHIT increases the maximum number of assignments, or extends the
@@ -366,10 +332,7 @@ func (client AmtClient) ExtendHIT(hitId string,
 	var (
 		request  amtgen.TxsdExtendHIT
 		args     amtgen.TExtendHITRequest
-		response struct {
-			XMLName xml.Name `xml:"response"`
-			amtgen.TxsdExtendHITResponse
-		}
+		response amtgen.TxsdExtendHITResponse
 	)
 	args.HITId = xsdt.String(hitId)
 	args.MaxAssignmentsIncrement = xsdt.Int(maxAssignmentsIncrement)
@@ -382,7 +345,7 @@ func (client AmtClient) ExtendHIT(hitId string,
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.TxsdExtendHITResponse, err
+	return response, err
 }
 
 // ForceExpireHIT causes a HIT to expire immediately, as if the
@@ -394,10 +357,7 @@ func (client AmtClient) ForceExpireHIT(hitId string) (
 	var (
 		request  amtgen.TxsdForceExpireHIT
 		args     amtgen.TForceExpireHITRequest
-		response struct {
-			XMLName xml.Name `xml:"response"`
-			amtgen.TxsdForceExpireHITResponse
-		}
+		response amtgen.TxsdForceExpireHITResponse
 	)
 	args.HITId = xsdt.String(hitId)
 	request.Requests = append(request.Requests, &args)
@@ -407,7 +367,7 @@ func (client AmtClient) ForceExpireHIT(hitId string) (
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.TxsdForceExpireHITResponse, err
+	return response, err
 }
 
 // GetAccountBalance causes a HIT to expire immediately, as if the
@@ -419,10 +379,7 @@ func (client AmtClient) GetAccountBalance() (
 	var (
 		request  amtgen.TxsdGetAccountBalance
 		args     amtgen.TGetAccountBalanceRequest
-		response struct {
-			XMLName xml.Name `xml:"response"`
-			amtgen.TxsdGetAccountBalanceResponse
-		}
+		response amtgen.TxsdGetAccountBalanceResponse
 	)
 	request.Requests = append(request.Requests, &args)
 
@@ -431,7 +388,7 @@ func (client AmtClient) GetAccountBalance() (
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.TxsdGetAccountBalanceResponse, err
+	return response, err
 }
 
 // GetAssignment retrieves an assignment with an AssignmentStatus value of
@@ -443,10 +400,7 @@ func (client AmtClient) GetAssignment(assignmentId string) (
 	var (
 		request  amtgen.TxsdGetAssignment
 		args     amtgen.TGetAssignmentRequest
-		response struct {
-			XMLName xml.Name `xml:"response"`
-			amtgen.TxsdGetAssignmentResponse
-		}
+		response amtgen.TxsdGetAssignmentResponse
 	)
 	args.AssignmentId = xsdt.String(assignmentId)
 	request.Requests = append(request.Requests, &args)
@@ -456,7 +410,7 @@ func (client AmtClient) GetAssignment(assignmentId string) (
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.TxsdGetAssignmentResponse, err
+	return response, err
 }
 
 // GetAssignmentsForHIT retrieves completed assignments for a HIT.
@@ -469,10 +423,7 @@ func (client AmtClient) GetAssignmentsForHIT(hitId string,
 	var (
 		request  amtgen.TxsdGetAssignmentsForHIT
 		args     amtgen.TGetAssignmentsForHITRequest
-		response struct {
-			XMLName xml.Name `xml:"response"`
-			amtgen.TxsdGetAssignmentsForHITResponse
-		}
+		response amtgen.TxsdGetAssignmentsForHITResponse
 	)
 	args.HITId = xsdt.String(hitId)
 	for _, status := range assignmentStatuses {
@@ -494,7 +445,7 @@ func (client AmtClient) GetAssignmentsForHIT(hitId string,
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.TxsdGetAssignmentsForHITResponse, err
+	return response, err
 }
 
 // GetBlockedWorkers retrieves a list of Workers who are blocked from working
@@ -506,10 +457,7 @@ func (client AmtClient) GetBlockedWorkers(pageSize, pageNumber int) (
 	var (
 		request  amtgen.TxsdGetBlockedWorkers
 		args     amtgen.TGetBlockedWorkersRequest
-		response struct {
-			XMLName xml.Name `xml:"response"`
-			amtgen.TxsdGetBlockedWorkersResponse
-		}
+		response amtgen.TxsdGetBlockedWorkersResponse
 	)
 	args.PageSize = xsdt.Int(pageSize)
 	args.PageNumber = xsdt.Int(pageNumber)
@@ -520,7 +468,7 @@ func (client AmtClient) GetBlockedWorkers(pageSize, pageNumber int) (
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.TxsdGetBlockedWorkersResponse, err
+	return response, err
 }
 
 // GetBonusPayments retrieves the amounts of bonuses you have paid to Workers
@@ -533,10 +481,7 @@ func (client AmtClient) GetBonusPayments(hitId, assignmentId string,
 	var (
 		request  amtgen.TxsdGetBonusPayments
 		args     amtgen.TGetBonusPaymentsRequest
-		response struct {
-			XMLName xml.Name `xml:"response"`
-			amtgen.TxsdGetBonusPaymentsResponse
-		}
+		response amtgen.TxsdGetBonusPaymentsResponse
 	)
 	args.HITId = xsdt.String(hitId)
 	args.AssignmentId = xsdt.String(assignmentId)
@@ -549,7 +494,7 @@ func (client AmtClient) GetBonusPayments(hitId, assignmentId string,
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.TxsdGetBonusPaymentsResponse, err
+	return response, err
 }
 
 // GetFileUploadURL generates and returns a temporary URL.
@@ -561,10 +506,7 @@ func (client AmtClient) GetFileUploadURL(assignmentId,
 	var (
 		request  amtgen.TxsdGetFileUploadURL
 		args     amtgen.TGetFileUploadURLRequest
-		response struct {
-			XMLName xml.Name `xml:"response"`
-			amtgen.TxsdGetFileUploadURLResponse
-		}
+		response amtgen.TxsdGetFileUploadURLResponse
 	)
 	args.AssignmentId = xsdt.String(assignmentId)
 	args.QuestionIdentifier = xsdt.String(questionIdentifier)
@@ -575,7 +517,7 @@ func (client AmtClient) GetFileUploadURL(assignmentId,
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.TxsdGetFileUploadURLResponse, err
+	return response, err
 }
 
 // GetHIT retrieves the details of the specified HIT.
@@ -586,10 +528,7 @@ func (client AmtClient) GetHIT(hitId string) (
 	var (
 		request  amtgen.TxsdGetHIT
 		args     amtgen.TGetHITRequest
-		response struct {
-			XMLName xml.Name `xml:"response"`
-			amtgen.TxsdGetHITResponse
-		}
+		response amtgen.TxsdGetHITResponse
 	)
 	args.HITId = xsdt.String(hitId)
 	request.Requests = append(request.Requests, &args)
@@ -599,7 +538,7 @@ func (client AmtClient) GetHIT(hitId string) (
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.TxsdGetHITResponse, err
+	return response, err
 }
 
 // GetHITsForQualificationType returns the HITs that use the given Qualification
@@ -612,10 +551,7 @@ func (client AmtClient) GetHITsForQualificationType(qualificationTypeId string,
 	var (
 		request  amtgen.TxsdGetHITsForQualificationType
 		args     amtgen.TGetHITsForQualificationTypeRequest
-		response struct {
-			XMLName xml.Name `xml:"response"`
-			amtgen.TxsdGetHITsForQualificationTypeResponse
-		}
+		response amtgen.TxsdGetHITsForQualificationTypeResponse
 	)
 	args.QualificationTypeId = xsdt.String(qualificationTypeId)
 	args.PageSize = xsdt.Int(pageSize)
@@ -627,7 +563,7 @@ func (client AmtClient) GetHITsForQualificationType(qualificationTypeId string,
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.TxsdGetHITsForQualificationTypeResponse, err
+	return response, err
 }
 
 // GetQualificationsForQualificationType returns all of the Qualifications
@@ -641,10 +577,7 @@ func (client AmtClient) GetQualificationsForQualificationType(
 	var (
 		request  amtgen.TxsdGetQualificationsForQualificationType
 		args     amtgen.TGetQualificationsForQualificationTypeRequest
-		response struct {
-			XMLName xml.Name `xml:"response"`
-			amtgen.TxsdGetQualificationsForQualificationTypeResponse
-		}
+		response amtgen.TxsdGetQualificationsForQualificationTypeResponse
 	)
 	args.QualificationTypeId = xsdt.String(qualificationTypeId)
 	if isGranted {
@@ -661,7 +594,7 @@ func (client AmtClient) GetQualificationsForQualificationType(
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.TxsdGetQualificationsForQualificationTypeResponse, err
+	return response, err
 }
 
 // GetQualificationRequests returns all of the Qualifications
@@ -675,10 +608,7 @@ func (client AmtClient) GetQualificationRequests(
 	var (
 		request  amtgen.TxsdGetQualificationRequests
 		args     amtgen.TGetQualificationRequestsRequest
-		response struct {
-			XMLName xml.Name `xml:"response"`
-			amtgen.TxsdGetQualificationRequestsResponse
-		}
+		response amtgen.TxsdGetQualificationRequestsResponse
 	)
 	args.QualificationTypeId = xsdt.String(qualificationTypeId)
 	args.SortProperty = amtgen.TGetQualificationRequestsSortProperty(
@@ -697,7 +627,7 @@ func (client AmtClient) GetQualificationRequests(
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.TxsdGetQualificationRequestsResponse, err
+	return response, err
 }
 
 // GetQualificationScore returns the value of a Worker's Qualification for a
@@ -710,10 +640,7 @@ func (client AmtClient) GetQualificationScore(
 	var (
 		request  amtgen.TxsdGetQualificationScore
 		args     amtgen.TGetQualificationScoreRequest
-		response struct {
-			XMLName                     xml.Name `xml:"response"`
-			GetQualificationScoreResult amtgen.TxsdGetQualificationScoreResponse
-		}
+		response amtgen.TxsdGetQualificationScoreResponse
 	)
 	args.QualificationTypeId = xsdt.String(qualificationTypeId)
 	args.SubjectId = xsdt.String(subjectId)
@@ -724,7 +651,7 @@ func (client AmtClient) GetQualificationScore(
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.GetQualificationScoreResult, err
+	return response, err
 }
 
 // GetQualificationType retrieves information about a Qualification type using
@@ -736,10 +663,7 @@ func (client AmtClient) GetQualificationType(qualificationTypeId string) (
 	var (
 		request  amtgen.TxsdGetQualificationType
 		args     amtgen.TGetQualificationTypeRequest
-		response struct {
-			XMLName                    xml.Name `xml:"response"`
-			GetQualificationTypeResult amtgen.TxsdGetQualificationTypeResponse
-		}
+		response amtgen.TxsdGetQualificationTypeResponse
 	)
 	args.QualificationTypeId = xsdt.String(qualificationTypeId)
 	request.Requests = append(request.Requests, &args)
@@ -749,7 +673,7 @@ func (client AmtClient) GetQualificationType(qualificationTypeId string) (
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.GetQualificationTypeResult, err
+	return response, err
 }
 
 // GetRequesterStatistic retrieves statistics about you (the Requester calling
@@ -761,10 +685,7 @@ func (client AmtClient) GetRequesterStatistic(statistic, timePeriod string,
 	var (
 		request  amtgen.TxsdGetRequesterStatistic
 		args     amtgen.TGetRequesterStatisticRequest
-		response struct {
-			XMLName xml.Name `xml:"response"`
-			amtgen.TxsdGetRequesterStatisticResponse
-		}
+		response amtgen.TxsdGetRequesterStatisticResponse
 	)
 	args.Statistic = amtgen.TRequesterStatistic(statistic)
 	args.TimePeriod = amtgen.TimePeriod(timePeriod)
@@ -776,7 +697,7 @@ func (client AmtClient) GetRequesterStatistic(statistic, timePeriod string,
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.TxsdGetRequesterStatisticResponse, err
+	return response, err
 }
 
 // GetRequesterWorkerStatistic retrieves statistics about a specific Worker who
@@ -788,10 +709,7 @@ func (client AmtClient) GetRequesterWorkerStatistic(statistic, workerId,
 	var (
 		request  amtgen.TxsdGetRequesterWorkerStatistic
 		args     amtgen.TGetRequesterWorkerStatisticRequest
-		response struct {
-			XMLName xml.Name `xml:"response"`
-			amtgen.TxsdGetRequesterWorkerStatisticResponse
-		}
+		response amtgen.TxsdGetRequesterWorkerStatisticResponse
 	)
 	args.Statistic = amtgen.TRequesterStatistic(statistic)
 	args.WorkerId = xsdt.String(workerId)
@@ -804,7 +722,7 @@ func (client AmtClient) GetRequesterWorkerStatistic(statistic, workerId,
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.TxsdGetRequesterWorkerStatisticResponse, err
+	return response, err
 }
 
 // GetReviewableHITs retrieves the HITs with Status equal to Reviewable or
@@ -817,10 +735,7 @@ func (client AmtClient) GetReviewableHITs(hitTypeId, status,
 	var (
 		request  amtgen.TxsdGetReviewableHITs
 		args     amtgen.TGetReviewableHITsRequest
-		response struct {
-			XMLName xml.Name `xml:"response"`
-			amtgen.TxsdGetReviewableHITsResponse
-		}
+		response amtgen.TxsdGetReviewableHITsResponse
 	)
 	args.HITTypeId = xsdt.String(hitTypeId)
 	args.Status = amtgen.TReviewableHITStatus(status)
@@ -839,7 +754,7 @@ func (client AmtClient) GetReviewableHITs(hitTypeId, status,
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.TxsdGetReviewableHITsResponse, err
+	return response, err
 }
 
 // GetReviewResultsForHIT retrieves the computed results and the actions taken
@@ -853,10 +768,7 @@ func (client AmtClient) GetReviewResultsForHIT(hitId string,
 	var (
 		request  amtgen.TxsdGetReviewResultsForHIT
 		args     amtgen.TGetReviewResultsForHITRequest
-		response struct {
-			XMLName xml.Name `xml:"response"`
-			amtgen.TxsdGetReviewResultsForHITResponse
-		}
+		response amtgen.TxsdGetReviewResultsForHITResponse
 	)
 	args.HITId = xsdt.String(hitId)
 	for _, level := range policyLevels {
@@ -874,7 +786,7 @@ func (client AmtClient) GetReviewResultsForHIT(hitId string,
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.TxsdGetReviewResultsForHITResponse, err
+	return response, err
 }
 
 // GrantBonus issues a payment of money from your account to a Worker.
@@ -886,10 +798,7 @@ func (client AmtClient) GrantBonus(workerId, assignmentId string,
 	var (
 		request  amtgen.TxsdGrantBonus
 		args     amtgen.TGrantBonusRequest
-		response struct {
-			XMLName xml.Name `xml:"response"`
-			amtgen.TxsdGrantBonusResponse
-		}
+		response amtgen.TxsdGrantBonusResponse
 	)
 	args.WorkerId = xsdt.String(workerId)
 	args.AssignmentId = xsdt.String(assignmentId)
@@ -905,7 +814,7 @@ func (client AmtClient) GrantBonus(workerId, assignmentId string,
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.TxsdGrantBonusResponse, err
+	return response, err
 }
 
 // GrantQualification issues a payment of money from your account to a Worker.
@@ -917,10 +826,7 @@ func (client AmtClient) GrantQualification(qualificationRequestId string,
 	var (
 		request  amtgen.TxsdGrantQualification
 		args     amtgen.TGrantQualificationRequest
-		response struct {
-			XMLName xml.Name `xml:"response"`
-			amtgen.TxsdGrantQualificationResponse
-		}
+		response amtgen.TxsdGrantQualificationResponse
 	)
 	args.QualificationRequestId = xsdt.String(qualificationRequestId)
 	args.IntegerValue = xsdt.Int(integerValue)
@@ -931,7 +837,7 @@ func (client AmtClient) GrantQualification(qualificationRequestId string,
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.TxsdGrantQualificationResponse, err
+	return response, err
 }
 
 // NotifyWorkers sends an email to one or more Workers that you specify with
@@ -943,10 +849,7 @@ func (client AmtClient) NotifyWorkers(subject, messageText string,
 	var (
 		request  amtgen.TxsdNotifyWorkers
 		args     amtgen.TNotifyWorkersRequest
-		response struct {
-			XMLName xml.Name `xml:"response"`
-			amtgen.TxsdNotifyWorkersResponse
-		}
+		response amtgen.TxsdNotifyWorkersResponse
 	)
 	args.Subject = xsdt.String(subject)
 	args.MessageText = xsdt.String(messageText)
@@ -960,7 +863,7 @@ func (client AmtClient) NotifyWorkers(subject, messageText string,
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.TxsdNotifyWorkersResponse, err
+	return response, err
 }
 
 // RegisterHITType creates a new HIT type.
@@ -974,10 +877,7 @@ func (client AmtClient) RegisterHITType(title, description string,
 	var (
 		request  amtgen.TxsdRegisterHITType
 		args     amtgen.TRegisterHITTypeRequest
-		response struct {
-			XMLName xml.Name `xml:"response"`
-			amtgen.TxsdRegisterHITTypeResponse
-		}
+		response amtgen.TxsdRegisterHITTypeResponse
 	)
 	args.Title = xsdt.String(title)
 	args.Description = xsdt.String(description)
@@ -995,7 +895,7 @@ func (client AmtClient) RegisterHITType(title, description string,
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.TxsdRegisterHITTypeResponse, err
+	return response, err
 }
 
 // RejectAssignment rejects the results of a completed assignment.
@@ -1007,10 +907,7 @@ func (client AmtClient) RejectAssignment(assignmentId,
 	var (
 		request  amtgen.TxsdRejectAssignment
 		args     amtgen.TRejectAssignmentRequest
-		response struct {
-			XMLName xml.Name `xml:"response"`
-			amtgen.TxsdRejectAssignmentResponse
-		}
+		response amtgen.TxsdRejectAssignmentResponse
 	)
 	args.AssignmentId = xsdt.String(assignmentId)
 	args.RequesterFeedback = xsdt.String(requesterFeedback)
@@ -1021,7 +918,7 @@ func (client AmtClient) RejectAssignment(assignmentId,
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.TxsdRejectAssignmentResponse, err
+	return response, err
 }
 
 // RejectQualificationRequest rejects a user's request for a Qualification.
@@ -1033,10 +930,7 @@ func (client AmtClient) RejectQualificationRequest(qualificationRequestId,
 	var (
 		request  amtgen.TxsdRejectQualificationRequest
 		args     amtgen.TRejectQualificationRequestRequest
-		response struct {
-			XMLName xml.Name `xml:"response"`
-			amtgen.TxsdRejectQualificationRequestResponse
-		}
+		response amtgen.TxsdRejectQualificationRequestResponse
 	)
 	args.QualificationRequestId = xsdt.String(qualificationRequestId)
 	args.Reason = xsdt.String(reason)
@@ -1047,7 +941,7 @@ func (client AmtClient) RejectQualificationRequest(qualificationRequestId,
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.TxsdRejectQualificationRequestResponse, err
+	return response, err
 }
 
 // RevokeQualification revokes a previously granted Qualification from a user.
@@ -1059,10 +953,7 @@ func (client AmtClient) RevokeQualification(subjectId, qualificationTypeId,
 	var (
 		request  amtgen.TxsdRevokeQualification
 		args     amtgen.TRevokeQualificationRequest
-		response struct {
-			XMLName xml.Name `xml:"response"`
-			amtgen.TxsdRevokeQualificationResponse
-		}
+		response amtgen.TxsdRevokeQualificationResponse
 	)
 	args.SubjectId = xsdt.String(subjectId)
 	args.QualificationTypeId = xsdt.String(qualificationTypeId)
@@ -1074,7 +965,7 @@ func (client AmtClient) RevokeQualification(subjectId, qualificationTypeId,
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.TxsdRevokeQualificationResponse, err
+	return response, err
 }
 
 // SearchHITs returns all of a Requester's HITs, on behalf of the Requester.
@@ -1086,10 +977,7 @@ func (client AmtClient) SearchHITs(sortProperty string, sortAscending bool,
 	var (
 		request  amtgen.TxsdSearchHITs
 		args     amtgen.TSearchHITsRequest
-		response struct {
-			XMLName xml.Name `xml:"response"`
-			amtgen.TxsdSearchHITsResponse
-		}
+		response amtgen.TxsdSearchHITsResponse
 	)
 	args.SortProperty = amtgen.TSearchHITsSortProperty(sortProperty)
 	if sortAscending {
@@ -1106,7 +994,7 @@ func (client AmtClient) SearchHITs(sortProperty string, sortAscending bool,
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.TxsdSearchHITsResponse, err
+	return response, err
 }
 
 // SearchQualificationTypes searches for Qualification types using the specified
@@ -1120,10 +1008,7 @@ func (client AmtClient) SearchQualificationTypes(
 	var (
 		request  amtgen.TxsdSearchQualificationTypes
 		args     amtgen.TSearchQualificationTypesRequest
-		response struct {
-			XMLName xml.Name `xml:"response"`
-			amtgen.TxsdSearchQualificationTypesResponse
-		}
+		response amtgen.TxsdSearchQualificationTypesResponse
 	)
 	args.Query = xsdt.String(query)
 	args.SortProperty = amtgen.TSearchQualificationTypesSortProperty(sortProperty)
@@ -1143,7 +1028,7 @@ func (client AmtClient) SearchQualificationTypes(
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.TxsdSearchQualificationTypesResponse, err
+	return response, err
 }
 
 // SendTestEventNotification causes Amazon Mechanical Turk to send a
@@ -1157,10 +1042,7 @@ func (client AmtClient) SendTestEventNotification(
 	var (
 		request  amtgen.TxsdSendTestEventNotification
 		args     amtgen.TSendTestEventNotificationRequest
-		response struct {
-			XMLName xml.Name `xml:"response"`
-			amtgen.TxsdSendTestEventNotificationResponse
-		}
+		response amtgen.TxsdSendTestEventNotificationResponse
 	)
 	args.Notification = notification
 	args.TestEventType = amtgen.TEventType(testEventType)
@@ -1171,7 +1053,7 @@ func (client AmtClient) SendTestEventNotification(
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.TxsdSendTestEventNotificationResponse, err
+	return response, err
 }
 
 // SetHITAsReviewing updates the status of a HIT. If the status is Reviewable,
@@ -1184,10 +1066,7 @@ func (client AmtClient) SetHITAsReviewing(hitID string, revert bool) (
 	var (
 		request  amtgen.TxsdSetHITAsReviewing
 		args     amtgen.TSetHITAsReviewingRequest
-		response struct {
-			XMLName xml.Name `xml:"response"`
-			amtgen.TxsdSetHITAsReviewingResponse
-		}
+		response amtgen.TxsdSetHITAsReviewingResponse
 	)
 	args.HITId = xsdt.String(hitID)
 	args.Revert = xsdt.Boolean(revert)
@@ -1198,7 +1077,7 @@ func (client AmtClient) SetHITAsReviewing(hitID string, revert bool) (
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.TxsdSetHITAsReviewingResponse, err
+	return response, err
 }
 
 // SetHITTypeNotification creates, updates, disables or re-enables notifications
@@ -1211,10 +1090,7 @@ func (client AmtClient) SetHITTypeNotification(hitTypeID string,
 	var (
 		request  amtgen.TxsdSetHITTypeNotification
 		args     amtgen.TSetHITTypeNotificationRequest
-		response struct {
-			XMLName xml.Name `xml:"response"`
-			amtgen.TxsdSetHITTypeNotificationResponse
-		}
+		response amtgen.TxsdSetHITTypeNotificationResponse
 	)
 	args.HITTypeId = xsdt.String(hitTypeID)
 	args.Notification = notification
@@ -1226,7 +1102,7 @@ func (client AmtClient) SetHITTypeNotification(hitTypeID string,
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.TxsdSetHITTypeNotificationResponse, err
+	return response, err
 }
 
 // UnblockWorker allows you to reinstate a blocked Worker to work on your HITs.
@@ -1237,10 +1113,7 @@ func (client AmtClient) UnblockWorker(workerId, reason string) (
 	var (
 		request  amtgen.TxsdUnblockWorker
 		args     amtgen.TUnblockWorkerRequest
-		response struct {
-			XMLName xml.Name `xml:"response"`
-			amtgen.TxsdUnblockWorkerResponse
-		}
+		response amtgen.TxsdUnblockWorkerResponse
 	)
 	args.WorkerId = xsdt.String(workerId)
 	args.Reason = xsdt.String(reason)
@@ -1251,7 +1124,7 @@ func (client AmtClient) UnblockWorker(workerId, reason string) (
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.TxsdUnblockWorkerResponse, err
+	return response, err
 }
 
 // UpdateQualificationScore changes the value of a Qualification previously
@@ -1264,10 +1137,7 @@ func (client AmtClient) UpdateQualificationScore(qualificationTypeId,
 	var (
 		request  amtgen.TxsdUpdateQualificationScore
 		args     amtgen.TUpdateQualificationScoreRequest
-		response struct {
-			XMLName xml.Name `xml:"response"`
-			amtgen.TxsdUpdateQualificationScoreResponse
-		}
+		response amtgen.TxsdUpdateQualificationScoreResponse
 	)
 	args.QualificationTypeId = xsdt.String(qualificationTypeId)
 	args.SubjectId = xsdt.String(subjectId)
@@ -1279,7 +1149,7 @@ func (client AmtClient) UpdateQualificationScore(qualificationTypeId,
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.TxsdUpdateQualificationScoreResponse, err
+	return response, err
 }
 
 // UpdateQualificationType modifies the attributes of an existing Qualification
@@ -1294,10 +1164,7 @@ func (client AmtClient) UpdateQualificationType(qualificationTypeId string,
 	var (
 		request  amtgen.TxsdUpdateQualificationType
 		args     amtgen.TUpdateQualificationTypeRequest
-		response struct {
-			XMLName                       xml.Name `xml:"response"`
-			UpdateQualificationTypeResult amtgen.TxsdUpdateQualificationTypeResponse
-		}
+		response amtgen.TxsdUpdateQualificationTypeResponse
 	)
 	args.QualificationTypeId = xsdt.String(qualificationTypeId)
 	args.RetryDelayInSeconds = xsdt.Long(retryDelayInSeconds)
@@ -1316,5 +1183,5 @@ func (client AmtClient) UpdateQualificationType(qualificationTypeId string,
 	if err == nil {
 		err = client.sendRequest(req, &response)
 	}
-	return response.UpdateQualificationTypeResult, err
+	return response, err
 }

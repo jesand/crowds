@@ -12,6 +12,7 @@
 package amt
 
 import (
+	"bytes"
 	"crypto/hmac"
 	"crypto/sha1"
 	"encoding/base64"
@@ -19,7 +20,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"reflect"
 	"strings"
@@ -63,12 +63,12 @@ type amtRequest struct {
 
 // Formats the current time in the format required by AMT
 func FormatNow() string {
-	return time.Now().Format("2006-01-02T15:04:05Z")
+	return FormatTime(time.Now())
 }
 
 // Formats a timestamp in the format required by AMT (2005-01-31T23:59:59Z)
 func FormatTime(t time.Time) string {
-	return t.Format("2006-01-02T15:04:05Z")
+	return t.UTC().Format("2006-01-02T15:04:05Z")
 }
 
 // Sets default fields and cryptographically signs the request.
@@ -232,25 +232,17 @@ func (client AmtClient) sendRequest(request amtRequest, response interface{}) er
 	} else if resp.StatusCode != http.StatusOK {
 		return fmt.Errorf("Request failed with HTTP status %d: %s", resp.StatusCode, resp.Status)
 	} else {
-		contents, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			return err
-		}
-		resp.Body.Close()
-		contents = []byte(strings.TrimSpace(string(contents)))
-		if len(contents) == 0 {
-			return fmt.Errorf("%s returned an empty response.", request.Operation)
-		}
+		defer resp.Body.Close()
+		var respBody bytes.Buffer
 
-		wrapped := []byte(fmt.Sprintf(
-			"%s<response xmlns='http://requester.mturk.amazonaws.com/doc/%s'>%s</response>",
-			xml.Header, API_VERSION, string(contents)))
-		err = xml.Unmarshal(wrapped, response)
-		if err == nil && len(contents) > 0 &&
-			isEmptyValue(reflect.ValueOf(response).Elem().Field(1)) {
+		dec := xml.NewDecoder(io.TeeReader(resp.Body, &respBody))
+		dec.DefaultSpace = fmt.Sprintf("http://requester.mturk.amazonaws.com/doc/%s", API_VERSION)
+		err = dec.Decode(response)
+		if err == nil &&
+			isEmptyValue(reflect.ValueOf(response).Elem().Field(0)) {
 
 			return fmt.Errorf("%s returned an empty response struct. Parse error? Response was: %s",
-				request.Operation, string(contents))
+				request.Operation, string(respBody.Bytes()))
 		}
 		return err
 	}

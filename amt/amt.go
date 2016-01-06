@@ -40,12 +40,12 @@ type AmtClient struct {
 }
 
 // Initialize a new client for AMT.
-func NewClient(accessKeyId, secretKey string, sandbox bool) AmtClient {
+func NewClient(accessKeyId, secretKey string, sandbox bool) *AmtClient {
 	urlRoot := URL_PROD
 	if sandbox {
 		urlRoot = URL_SANDBOX
 	}
-	return AmtClient{
+	return &AmtClient{
 		AWSAccessKeyId: accessKeyId,
 		SecretKey:      secretKey,
 		UrlRoot:        urlRoot,

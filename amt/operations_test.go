@@ -35,7 +35,7 @@ var (
 	srvUrlTimestamp string
 )
 
-func newTestClient() AmtClient {
+func newTestClient() *AmtClient {
 	openSrv()
 	client := NewClient(FAKE_ACCESS_KEY, FAKE_SECRET_KEY, false)
 	client.UrlRoot = srv.URL

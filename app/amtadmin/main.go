@@ -5,7 +5,10 @@ import (
 	"fmt"
 	"github.com/docopt/docopt-go"
 	"github.com/jesand/crowds/amt"
+	xsdt "github.com/metaleap/go-xsd/types"
 	"os"
+	"reflect"
+	"sort"
 )
 
 const (
@@ -13,13 +16,16 @@ const (
 
 Usage:
   amtadmin balance --amt=<path> [--sandbox]
+  amtadmin hit --amt=<path> --id=<id> [--sandbox]
   amtadmin -h | --help
   amtadmin --version
 
 Options:
   balance       Get the account balance
+  hits          List HIT information
   --amt=<path>  The path to a file containing AMT credentials
   --sandbox     Address the AMT sandbox instead of the production site
+  --id=<id>     The ID of the object you want to view
 `
 )
 
@@ -52,15 +58,80 @@ func main() {
 	switch {
 	case args["balance"].(bool):
 		RunBalance(client)
+	case args["hit"].(bool):
+		hitId, _ := args["--id"].(string)
+		RunHit(client, hitId)
+	}
+}
+
+func getObjectFields(object interface{}, vals map[string]string) {
+	v := reflect.Indirect(reflect.ValueOf(object))
+	if !v.IsValid() {
+		return
+	}
+	t := v.Type()
+	switch t.Kind() {
+	case reflect.Slice:
+		for i := 0; i < v.Len(); i++ {
+			getObjectFields(v.Index(i).Interface(), vals)
+		}
+	case reflect.Struct:
+		for i := 0; i < t.NumField(); i++ {
+			field := t.Field(i)
+			switch field.Type.Kind() {
+			case reflect.Struct, reflect.Ptr, reflect.Slice:
+				getObjectFields(v.Field(i).Interface(), vals)
+			default:
+				if field.Type == reflect.TypeOf(xsdt.Int(0)) {
+					vals[field.Name] = fmt.Sprintf("%d", v.Field(i).Interface())
+				} else if field.Type == reflect.TypeOf(xsdt.Long(0)) {
+					vals[field.Name] = fmt.Sprintf("%d", v.Field(i).Interface())
+				} else {
+					vals[field.Name] = v.Field(i).String()
+				}
+			}
+		}
+	}
+}
+
+func printObject(object interface{}) {
+	var (
+		fields   []string
+		vals     = make(map[string]string)
+		fieldLen int
+	)
+	getObjectFields(object, vals)
+	for name, _ := range vals {
+		fields = append(fields, name)
+		if len(name) > fieldLen {
+			fieldLen = len(name)
+		}
+	}
+	sort.Strings(fields)
+	format := fmt.Sprintf("%%%ds: %%s\n", fieldLen)
+	for _, name := range fields {
+		fmt.Printf(format, name, vals[name])
 	}
 }
 
 func RunBalance(client *amt.AmtClient) {
 	balance, err := client.GetAccountBalance()
 	if err != nil {
-		fmt.Printf("Error: Could not check account balance: %v\n", err)
+		fmt.Printf("Error: The AMT request failed: %v\n", err)
 		return
 	}
-	fmt.Println("Current balance:",
-		balance.GetAccountBalanceResults[0].AvailableBalance.FormattedPrice)
+	printObject(balance)
+}
+
+func RunHit(client *amt.AmtClient, hitId string) {
+	if hit, err := client.GetHIT(hitId); err != nil {
+		fmt.Printf("Error: The AMT request failed: %v\n", err)
+		return
+	} else if len(hit.Hits) > 0 && hit.Hits[0].Request != nil &&
+		hit.Hits[0].Request.Errors != nil {
+
+		printObject(hit.Hits[0].Request)
+	} else {
+		printObject(hit)
+	}
 }

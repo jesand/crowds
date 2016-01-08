@@ -16,20 +16,23 @@ const (
 	USAGE = `hiclusterd - Web service hosting for hicluster
 
 Usage:
-  amtadmin balance --amt=<path> [--sandbox]
-  amtadmin show [--hit=<id>] [--assn=<id>] --amt=<path> [--sandbox]
-  amtadmin hits [--sort=<field>] [--desc] [--page=<num>] [--pageSize=<num>] ` +
-		`--amt=<path> [--sandbox]
   amtadmin assns --hit=<id> [--status=<str>] [--sort=<field>] [--desc] ` +
 		`[--page=<num>] [--pageSize=<num>] --amt=<path> [--sandbox]
+  amtadmin balance --amt=<path> [--sandbox]
+  amtadmin expire [--hit=<id>] [--all] --amt=<path> [--sandbox]
+  amtadmin hits [--sort=<field>] [--desc] [--page=<num>] [--pageSize=<num>] ` +
+		`--amt=<path> [--sandbox]
+  amtadmin show [--hit=<id>] [--assn=<id>] --amt=<path> [--sandbox]
   amtadmin -h | --help
   amtadmin --version
 
 Options:
-  balance           Get the account balance
-  show              Display the status of a HIT or Assignment
-  hits              Find matching HITs
   assns             Find assignments for a HIT
+  balance           Get the account balance
+  expire            Force-expire the specified HIT
+  hits              Find matching HITs
+  show              Display the status of a HIT or Assignment
+  --all             Operate on all applicable objects
   --amt=<path>      The path to a file containing AMT credentials
   --sandbox         Address the AMT sandbox instead of the production site
   --hit=<id>        The ID of the HIT you want to view
@@ -72,32 +75,6 @@ func main() {
 	}
 
 	switch {
-	case args["balance"].(bool):
-		RunBalance(client)
-
-	case args["show"].(bool):
-		hitId, _ := args["--hit"].(string)
-		assnId, _ := args["--assn"].(string)
-		RunShow(client, hitId, assnId)
-
-	case args["hits"].(bool):
-		var (
-			sort, _               = args["--sort"].(string)
-			desc                  = args["--desc"].(bool)
-			page, pageErr         = strconv.Atoi(args["--page"].(string))
-			pageSize, pageSizeErr = strconv.Atoi(args["--pageSize"].(string))
-		)
-		if sort == "" {
-			sort = "CreationTime"
-		}
-		if pageErr != nil {
-			fmt.Printf("Invalid --page argument\n")
-		} else if pageSizeErr != nil {
-			fmt.Printf("Invald --pageSize argument\n")
-		} else {
-			RunHits(client, sort, desc, page, pageSize)
-		}
-
 	case args["assns"].(bool):
 		var (
 			hitId, _              = args["--hit"].(string)
@@ -121,6 +98,39 @@ func main() {
 		} else {
 			RunAssns(client, hitId, statuses, sort, desc, page, pageSize)
 		}
+
+	case args["balance"].(bool):
+		RunBalance(client)
+
+	case args["expire"].(bool):
+		var (
+			all      = args["--all"].(bool)
+			hitId, _ = args["--hit"].(string)
+		)
+		RunExpire(client, hitId, all)
+
+	case args["hits"].(bool):
+		var (
+			sort, _               = args["--sort"].(string)
+			desc                  = args["--desc"].(bool)
+			page, pageErr         = strconv.Atoi(args["--page"].(string))
+			pageSize, pageSizeErr = strconv.Atoi(args["--pageSize"].(string))
+		)
+		if sort == "" {
+			sort = "CreationTime"
+		}
+		if pageErr != nil {
+			fmt.Printf("Invalid --page argument\n")
+		} else if pageSizeErr != nil {
+			fmt.Printf("Invald --pageSize argument\n")
+		} else {
+			RunHits(client, sort, desc, page, pageSize)
+		}
+
+	case args["show"].(bool):
+		hitId, _ := args["--hit"].(string)
+		assnId, _ := args["--assn"].(string)
+		RunShow(client, hitId, assnId)
 	}
 }
 
@@ -174,6 +184,28 @@ func printObject(object interface{}) {
 	}
 }
 
+func RunAssns(client amt.AmtClient, hitId string, statuses []string, sort string, desc bool, page, pageSize int) {
+	if resp, err := client.GetAssignmentsForHIT(hitId, statuses, sort, !desc,
+		pageSize, page); err != nil {
+
+		fmt.Printf("Error: The AMT request failed: %v\n", err)
+		return
+	} else if len(resp.GetAssignmentsForHITResults) > 0 &&
+		resp.GetAssignmentsForHITResults[0].Request != nil &&
+		resp.GetAssignmentsForHITResults[0].Request.Errors != nil {
+
+		printObject(resp.GetAssignmentsForHITResults[0].Request)
+	} else if len(resp.GetAssignmentsForHITResults[0].Assignments) == 0 {
+		fmt.Println("Found no assignments for this HIT")
+	} else {
+		for i, assn := range resp.GetAssignmentsForHITResults[0].Assignments {
+			fmt.Printf("Assignment %d/%d:\n", i+1, len(resp.GetAssignmentsForHITResults))
+			printObject(assn)
+			fmt.Println()
+		}
+	}
+}
+
 func RunBalance(client amt.AmtClient) {
 	balance, err := client.GetAccountBalance()
 	if err != nil {
@@ -181,6 +213,51 @@ func RunBalance(client amt.AmtClient) {
 		return
 	}
 	printObject(balance)
+}
+
+func RunExpire(client amt.AmtClient, hitId string, all bool) {
+	if all {
+		if resp, err := client.SearchHITs("Enumeration", true, 100, 1); err != nil {
+			fmt.Printf("Error: The AMT request failed: %v\n", err)
+			return
+		} else if len(resp.SearchHITsResults) > 0 &&
+			resp.SearchHITsResults[0].Request != nil &&
+			resp.SearchHITsResults[0].Request.Errors != nil {
+
+			printObject(resp.SearchHITsResults[0].Request)
+		} else if len(resp.SearchHITsResults[0].Hits) == 0 {
+			fmt.Println("Found no HITs for this account")
+		} else {
+			for _, hit := range resp.SearchHITsResults[0].Hits {
+				fmt.Printf("Expire HIT %q\n", hit.HITId)
+				RunExpire(client, string(hit.HITId), false)
+			}
+		}
+	} else if resp, err := client.ForceExpireHIT(hitId); err != nil {
+		fmt.Printf("Error: Could not expire HIT - %v", err)
+	} else {
+		printObject(resp)
+	}
+}
+
+func RunHits(client amt.AmtClient, sort string, desc bool, page, pageSize int) {
+	if resp, err := client.SearchHITs(sort, !desc, pageSize, page); err != nil {
+		fmt.Printf("Error: The AMT request failed: %v\n", err)
+		return
+	} else if len(resp.SearchHITsResults) > 0 &&
+		resp.SearchHITsResults[0].Request != nil &&
+		resp.SearchHITsResults[0].Request.Errors != nil {
+
+		printObject(resp.SearchHITsResults[0].Request)
+	} else if len(resp.SearchHITsResults[0].Hits) == 0 {
+		fmt.Println("Found no HITs for this account")
+	} else {
+		for i, hit := range resp.SearchHITsResults[0].Hits {
+			fmt.Printf("HIT %d/%d:\n", i+1, len(resp.SearchHITsResults))
+			printObject(hit)
+			fmt.Println()
+		}
+	}
 }
 
 func RunShow(client amt.AmtClient, hitId, assnId string) {
@@ -212,47 +289,5 @@ func RunShow(client amt.AmtClient, hitId, assnId string) {
 
 	default:
 		fmt.Println("You must provide a value for either --hit or --assn")
-	}
-}
-
-func RunHits(client amt.AmtClient, sort string, desc bool, page, pageSize int) {
-	if resp, err := client.SearchHITs(sort, !desc, pageSize, page); err != nil {
-		fmt.Printf("Error: The AMT request failed: %v\n", err)
-		return
-	} else if len(resp.SearchHITsResults) > 0 &&
-		resp.SearchHITsResults[0].Request != nil &&
-		resp.SearchHITsResults[0].Request.Errors != nil {
-
-		printObject(resp.SearchHITsResults[0].Request)
-	} else if len(resp.SearchHITsResults[0].Hits) == 0 {
-		fmt.Println("Found no HITs for this account")
-	} else {
-		for i, hit := range resp.SearchHITsResults[0].Hits {
-			fmt.Printf("HIT %d/%d:\n", i+1, len(resp.SearchHITsResults))
-			printObject(hit)
-			fmt.Println()
-		}
-	}
-}
-
-func RunAssns(client amt.AmtClient, hitId string, statuses []string, sort string, desc bool, page, pageSize int) {
-	if resp, err := client.GetAssignmentsForHIT(hitId, statuses, sort, !desc,
-		pageSize, page); err != nil {
-
-		fmt.Printf("Error: The AMT request failed: %v\n", err)
-		return
-	} else if len(resp.GetAssignmentsForHITResults) > 0 &&
-		resp.GetAssignmentsForHITResults[0].Request != nil &&
-		resp.GetAssignmentsForHITResults[0].Request.Errors != nil {
-
-		printObject(resp.GetAssignmentsForHITResults[0].Request)
-	} else if len(resp.GetAssignmentsForHITResults[0].Assignments) == 0 {
-		fmt.Println("Found no assignments for this HIT")
-	} else {
-		for i, assn := range resp.GetAssignmentsForHITResults[0].Assignments {
-			fmt.Printf("Assignment %d/%d:\n", i+1, len(resp.GetAssignmentsForHITResults))
-			printObject(assn)
-			fmt.Println()
-		}
 	}
 }

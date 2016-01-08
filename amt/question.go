@@ -70,10 +70,8 @@ type ExternalQuestion struct {
 	// The name of the wrapper element for an XML representation of the object
 	XMLName xml.Name `xml:"http://mechanicalturk.amazonaws.com/AWSMechanicalTurkDataSchemas/2006-07-14/ExternalQuestion.xsd ExternalQuestion"`
 
-	// The question. Exposes the following top-level properties:
-	// ExternalURL xsdt.AnyURI: The URL to your hosted question.
-	// FrameHeight xsdt.Integer: The height of the HTML frame to host the question.
-	externalquestion.TxsdExternalQuestion
+	externalquestion.XsdGoPkgHasElem_ExternalURLsequenceTxsdExternalQuestionExternalQuestionschema_ExternalURL_XsdtAnyURI_
+	externalquestion.XsdGoPkgHasElem_FrameHeightsequenceTxsdExternalQuestionExternalQuestionschema_FrameHeight_XsdtInteger_
 }
 
 // HTMLQuestion is a HITQuestion that uses the HTMLQuestion XML schema.

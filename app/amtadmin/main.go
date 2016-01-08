@@ -217,7 +217,8 @@ func RunBalance(client amt.AmtClient) {
 
 func RunExpire(client amt.AmtClient, hitId string, all bool) {
 	if all {
-		if resp, err := client.SearchHITs("Enumeration", true, 100, 1); err != nil {
+		const maxHits = 100
+		if resp, err := client.SearchHITs("CreationTime", false, maxHits, 1); err != nil {
 			fmt.Printf("Error: The AMT request failed: %v\n", err)
 			return
 		} else if len(resp.SearchHITsResults) > 0 &&
@@ -229,8 +230,14 @@ func RunExpire(client amt.AmtClient, hitId string, all bool) {
 			fmt.Println("Found no HITs for this account")
 		} else {
 			for _, hit := range resp.SearchHITsResults[0].Hits {
-				fmt.Printf("Expire HIT %q\n", hit.HITId)
-				RunExpire(client, string(hit.HITId), false)
+				if hit.HITStatus == "Assignable" {
+					fmt.Printf("Expire HIT %q with %d available assignments\n",
+						hit.HITId, hit.NumberOfAssignmentsAvailable)
+					RunExpire(client, string(hit.HITId), false)
+				}
+			}
+			if len(resp.SearchHITsResults[0].Hits) == maxHits {
+				fmt.Println("Retrieved the maximum number of HITs. Repeat the command to find any remaining HITs.")
 			}
 		}
 	} else if resp, err := client.ForceExpireHIT(hitId); err != nil {

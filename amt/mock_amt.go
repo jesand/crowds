@@ -95,17 +95,6 @@ func (_mr *_MockAmtClientRecorder) CreateHIT(arg0, arg1, arg2, arg3, arg4, arg5,
 	return _mr.mock.ctrl.RecordCall(_mr.mock, "CreateHIT", arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15)
 }
 
-func (_m *MockAmtClient) CreateHITFromHITTypeId(hitTypeId string, question string, hitLayoutId string, hitLayoutParameters map[string]string, lifetimeInSeconds int, maxAssignments int, assignmentReviewPolicy *AWSMechanicalTurkRequester_xsd_go.TReviewPolicy, hitReviewPolicy *AWSMechanicalTurkRequester_xsd_go.TReviewPolicy, requesterAnnotation string, uniqueRequestToken string) (AWSMechanicalTurkRequester_xsd_go.TxsdCreateHITResponse, error) {
-	ret := _m.ctrl.Call(_m, "CreateHITFromHITTypeId", hitTypeId, question, hitLayoutId, hitLayoutParameters, lifetimeInSeconds, maxAssignments, assignmentReviewPolicy, hitReviewPolicy, requesterAnnotation, uniqueRequestToken)
-	ret0, _ := ret[0].(AWSMechanicalTurkRequester_xsd_go.TxsdCreateHITResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-func (_mr *_MockAmtClientRecorder) CreateHITFromHITTypeId(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9 interface{}) *gomock.Call {
-	return _mr.mock.ctrl.RecordCall(_mr.mock, "CreateHITFromHITTypeId", arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9)
-}
-
 func (_m *MockAmtClient) CreateHITFromArgs(args AWSMechanicalTurkRequester_xsd_go.TCreateHITRequest) (AWSMechanicalTurkRequester_xsd_go.TxsdCreateHITResponse, error) {
 	ret := _m.ctrl.Call(_m, "CreateHITFromArgs", args)
 	ret0, _ := ret[0].(AWSMechanicalTurkRequester_xsd_go.TxsdCreateHITResponse)
@@ -115,6 +104,17 @@ func (_m *MockAmtClient) CreateHITFromArgs(args AWSMechanicalTurkRequester_xsd_g
 
 func (_mr *_MockAmtClientRecorder) CreateHITFromArgs(arg0 interface{}) *gomock.Call {
 	return _mr.mock.ctrl.RecordCall(_mr.mock, "CreateHITFromArgs", arg0)
+}
+
+func (_m *MockAmtClient) CreateHITFromHITTypeId(hitTypeId string, question string, hitLayoutId string, hitLayoutParameters map[string]string, lifetimeInSeconds int, maxAssignments int, assignmentReviewPolicy *AWSMechanicalTurkRequester_xsd_go.TReviewPolicy, hitReviewPolicy *AWSMechanicalTurkRequester_xsd_go.TReviewPolicy, requesterAnnotation string, uniqueRequestToken string) (AWSMechanicalTurkRequester_xsd_go.TxsdCreateHITResponse, error) {
+	ret := _m.ctrl.Call(_m, "CreateHITFromHITTypeId", hitTypeId, question, hitLayoutId, hitLayoutParameters, lifetimeInSeconds, maxAssignments, assignmentReviewPolicy, hitReviewPolicy, requesterAnnotation, uniqueRequestToken)
+	ret0, _ := ret[0].(AWSMechanicalTurkRequester_xsd_go.TxsdCreateHITResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+func (_mr *_MockAmtClientRecorder) CreateHITFromHITTypeId(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9 interface{}) *gomock.Call {
+	return _mr.mock.ctrl.RecordCall(_mr.mock, "CreateHITFromHITTypeId", arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9)
 }
 
 func (_m *MockAmtClient) CreateQualificationType(name string, description string, keywords []string, retryDelayInSeconds int, qualificationTypeStatus string, test string, answerKey string, testDurationInSeconds int, autoGranted bool, autoGrantedValue int) (AWSMechanicalTurkRequester_xsd_go.TxsdCreateQualificationTypeResponse, error) {
@@ -271,17 +271,6 @@ func (_mr *_MockAmtClientRecorder) GetHITsForQualificationType(arg0, arg1, arg2 
 	return _mr.mock.ctrl.RecordCall(_mr.mock, "GetHITsForQualificationType", arg0, arg1, arg2)
 }
 
-func (_m *MockAmtClient) GetQualificationsForQualificationType(qualificationTypeId string, isGranted bool, pageSize int, pageNumber int) (AWSMechanicalTurkRequester_xsd_go.TxsdGetQualificationsForQualificationTypeResponse, error) {
-	ret := _m.ctrl.Call(_m, "GetQualificationsForQualificationType", qualificationTypeId, isGranted, pageSize, pageNumber)
-	ret0, _ := ret[0].(AWSMechanicalTurkRequester_xsd_go.TxsdGetQualificationsForQualificationTypeResponse)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-func (_mr *_MockAmtClientRecorder) GetQualificationsForQualificationType(arg0, arg1, arg2, arg3 interface{}) *gomock.Call {
-	return _mr.mock.ctrl.RecordCall(_mr.mock, "GetQualificationsForQualificationType", arg0, arg1, arg2, arg3)
-}
-
 func (_m *MockAmtClient) GetQualificationRequests(qualificationTypeId string, sortProperty string, sortAscending bool, pageSize int, pageNumber int) (AWSMechanicalTurkRequester_xsd_go.TxsdGetQualificationRequestsResponse, error) {
 	ret := _m.ctrl.Call(_m, "GetQualificationRequests", qualificationTypeId, sortProperty, sortAscending, pageSize, pageNumber)
 	ret0, _ := ret[0].(AWSMechanicalTurkRequester_xsd_go.TxsdGetQualificationRequestsResponse)
@@ -302,6 +291,17 @@ func (_m *MockAmtClient) GetQualificationScore(qualificationTypeId string, subje
 
 func (_mr *_MockAmtClientRecorder) GetQualificationScore(arg0, arg1 interface{}) *gomock.Call {
 	return _mr.mock.ctrl.RecordCall(_mr.mock, "GetQualificationScore", arg0, arg1)
+}
+
+func (_m *MockAmtClient) GetQualificationsForQualificationType(qualificationTypeId string, isGranted bool, pageSize int, pageNumber int) (AWSMechanicalTurkRequester_xsd_go.TxsdGetQualificationsForQualificationTypeResponse, error) {
+	ret := _m.ctrl.Call(_m, "GetQualificationsForQualificationType", qualificationTypeId, isGranted, pageSize, pageNumber)
+	ret0, _ := ret[0].(AWSMechanicalTurkRequester_xsd_go.TxsdGetQualificationsForQualificationTypeResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+func (_mr *_MockAmtClientRecorder) GetQualificationsForQualificationType(arg0, arg1, arg2, arg3 interface{}) *gomock.Call {
+	return _mr.mock.ctrl.RecordCall(_mr.mock, "GetQualificationsForQualificationType", arg0, arg1, arg2, arg3)
 }
 
 func (_m *MockAmtClient) GetQualificationType(qualificationTypeId string) (AWSMechanicalTurkRequester_xsd_go.TxsdGetQualificationTypeResponse, error) {
@@ -401,6 +401,17 @@ func (_m *MockAmtClient) RegisterHITType(title string, description string, rewar
 
 func (_mr *_MockAmtClientRecorder) RegisterHITType(arg0, arg1, arg2, arg3, arg4, arg5, arg6 interface{}) *gomock.Call {
 	return _mr.mock.ctrl.RecordCall(_mr.mock, "RegisterHITType", arg0, arg1, arg2, arg3, arg4, arg5, arg6)
+}
+
+func (_m *MockAmtClient) RegisterHITTypeFromArgs(args AWSMechanicalTurkRequester_xsd_go.TRegisterHITTypeRequest) (AWSMechanicalTurkRequester_xsd_go.TxsdRegisterHITTypeResponse, error) {
+	ret := _m.ctrl.Call(_m, "RegisterHITTypeFromArgs", args)
+	ret0, _ := ret[0].(AWSMechanicalTurkRequester_xsd_go.TxsdRegisterHITTypeResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+func (_mr *_MockAmtClientRecorder) RegisterHITTypeFromArgs(arg0 interface{}) *gomock.Call {
+	return _mr.mock.ctrl.RecordCall(_mr.mock, "RegisterHITTypeFromArgs", arg0)
 }
 
 func (_m *MockAmtClient) RejectAssignment(assignmentId string, requesterFeedback string) (AWSMechanicalTurkRequester_xsd_go.TxsdRejectAssignmentResponse, error) {

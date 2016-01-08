@@ -877,9 +877,7 @@ func (client amtClient) RegisterHITType(title, description string,
 
 	// Prepare the request
 	var (
-		request  amtgen.TxsdRegisterHITType
-		args     amtgen.TRegisterHITTypeRequest
-		response amtgen.TxsdRegisterHITTypeResponse
+		args amtgen.TRegisterHITTypeRequest
 	)
 	args.Title = xsdt.String(title)
 	args.Description = xsdt.String(description)
@@ -890,6 +888,19 @@ func (client amtClient) RegisterHITType(title, description string,
 	args.AutoApprovalDelayInSeconds = xsdt.Long(autoApprovalDelayInSeconds)
 	args.Keywords = xsdt.String(strings.Join(keywords, ","))
 	args.QualificationRequirements = qualificationRequirements
+
+	return client.RegisterHITTypeFromArgs(args)
+}
+
+// RegisterHITType creates a new HIT type.
+func (client amtClient) RegisterHITTypeFromArgs(args amtgen.TRegisterHITTypeRequest) (
+	amtgen.TxsdRegisterHITTypeResponse, error) {
+
+	// Prepare the request
+	var (
+		request  amtgen.TxsdRegisterHITType
+		response amtgen.TxsdRegisterHITTypeResponse
+	)
 	request.Requests = append(request.Requests, &args)
 
 	// Send the request

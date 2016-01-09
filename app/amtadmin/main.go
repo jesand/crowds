@@ -19,6 +19,8 @@ Usage:
   amtadmin assns --hit=<id> [--status=<str>] [--sort=<field>] [--desc] ` +
 		`[--page=<num>] [--pageSize=<num>] --amt=<path> [--sandbox]
   amtadmin balance --amt=<path> [--sandbox]
+  amtadmin bonus --worker=<id> --assn=<id> --amount=<num> --reason=<str> ` +
+		`--token=<str> --amt=<path> [--sandbox]
   amtadmin expire [--hit=<id>] [--all] --amt=<path> [--sandbox]
   amtadmin hits [--sort=<field>] [--desc] [--page=<num>] [--pageSize=<num>] ` +
 		`--amt=<path> [--sandbox]
@@ -29,22 +31,27 @@ Usage:
 Options:
   assns             Find assignments for a HIT
   balance           Get the account balance
+  bonus             Grant a worker bonus
   expire            Force-expire the specified HIT
   hits              Find matching HITs
   show              Display the status of a HIT or Assignment
   --all             Operate on all applicable objects
+  --amount=<num>    The amount of money
   --amt=<path>      The path to a file containing AMT credentials
-  --sandbox         Address the AMT sandbox instead of the production site
-  --hit=<id>        The ID of the HIT you want to view
   --assn=<id>       The ID of the assignment you want to view
+  --desc            Sort results in descending order
+  --hit=<id>        The ID of the HIT you want to view
+  --page=<num>      The page number of results to display [default: 1]
+  --pageSize=<num>  The number of results to display per page [default: 10]
+  --reason=<str>    The reason to communicate to the worker
+  --sandbox         Address the AMT sandbox instead of the production site
   --sort=<field>    The field to sort by. For hits, one of: CreationTime,
                     Enumeration, Expiration, Reward, or Title. For assns, one
                     of: AcceptTime, SubmitTime, or AssignmentStatus.
   --status=<str>    The assignment status to search for. Can be:
                     Submitted, Approved, or Rejected.
-  --desc            Sort results in descending order
-  --page=<num>      The page number of results to display [default: 1]
-  --pageSize=<num>  The number of results to display per page [default: 10]
+  --token=<str>     A unique token to prevent duplicate requests
+  --worker=<id>     The id of the worker
 `
 )
 
@@ -101,6 +108,20 @@ func main() {
 
 	case args["balance"].(bool):
 		RunBalance(client)
+
+	case args["bonus"].(bool):
+		var (
+			workerId, _       = args["--worker"].(string)
+			assnId, _         = args["--assn"].(string)
+			reason, _         = args["--reason"].(string)
+			token, _          = args["--token"].(string)
+			amount, amountErr = strconv.ParseFloat(args["--amount"].(string), 32)
+		)
+		if amountErr != nil {
+			fmt.Printf("Invalid --amount argument\n")
+		} else {
+			RunBonus(client, workerId, assnId, float32(amount), reason, token)
+		}
 
 	case args["expire"].(bool):
 		var (
@@ -213,6 +234,16 @@ func RunBalance(client amt.AmtClient) {
 		return
 	}
 	printObject(balance)
+}
+
+func RunBonus(client amt.AmtClient, workerId, assnId string, amount float32,
+	reason, token string) {
+	resp, err := client.GrantBonus(workerId, assnId, amount, reason, token)
+	if err != nil {
+		fmt.Printf("Error: The AMT request failed: %v\n", err)
+		return
+	}
+	printObject(resp)
 }
 
 func RunExpire(client amt.AmtClient, hitId string, all bool) {

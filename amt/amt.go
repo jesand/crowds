@@ -88,6 +88,9 @@ type amtClient struct {
 
 	// The root URL to which requests should be sent
 	UrlRoot string
+
+	// The request rate throttle, used to avoid spamming AMT
+	Throttle *time.Ticker
 }
 
 // Initialize a new client for AMT.
@@ -100,6 +103,7 @@ func NewClient(accessKeyId, secretKey string, sandbox bool) AmtClient {
 		AWSAccessKeyId: accessKeyId,
 		SecretKey:      secretKey,
 		UrlRoot:        urlRoot,
+		Throttle:       time.NewTicker(550 * time.Millisecond),
 	}
 }
 
@@ -252,6 +256,9 @@ func packField(n string, v reflect.Value, justIndexed bool) map[string]string {
 
 // Send a request and decode the response into the given struct.
 func (client amtClient) sendRequest(request amtRequest, response interface{}) error {
+	if client.Throttle != nil {
+		<-client.Throttle.C
+	}
 	req, err := http.NewRequest("GET", client.UrlRoot, nil)
 	if err != nil {
 		return err
